@@ -9,7 +9,10 @@ New player: player who is new to the game and wants to quickly learn the basic m
 
 ## 2. Use Cases and User Flows
 
-Quickly starting a new game.
+Player presses new game and instantly starts moving around and exploring the randomly generated floor and fighting enemies by running against them. Player engaging with an enemy causes their stats to be calculated against the enemy's stats. For example if the players defense stat and armor has a combined 20% of damage reduction for physical damage, the enemy only does 80% of damage based on their physical attack stat. As the player defeats enemies, they gain experience points and once they've accumulated enough, they'll level up and their stats grow either randomly or based on what is their most used weapon type. With every level up, the amount of experience points needed for the next level up gets larger. Harder enemies also give out more experience points so overall the pacing of level ups should remain smooth. 
+Player can also find equippable armor and weapons that boost the players power, so if the player is lucky, they can survive longer if they find good gear. Every 10 or so levels of the dungeon, there are harder boss enemies that are randomized. Boss enemies give out a lot of experience points and drop unique equipment for the player.
+When the player dies, they can choose to share the link to their generated dungeon that someone else can then continue to play. Also when shared, the previous players characters corpse can be found at the spot they died, and then looted for their gear. 
+
 
 ## 3. UI Prototypes
 
