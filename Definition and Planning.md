@@ -16,7 +16,7 @@ When the player dies, they can choose to share the link to their generated dunge
 
 ## 3. UI Prototypes
 
-Add something
+![screenshot](ui_prototype.png)
 
 ## 4. Information Architecture and Technical Design
 
