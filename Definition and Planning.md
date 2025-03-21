@@ -20,8 +20,12 @@ Add something
 
 ## 4. Information Architecture and Technical Design
 
-Add something
+We're gonna be using javascript and react for the project, also and using SQL to store player stats, inventory and area info in certain cases. UI such as inventory and player status will be visible at all times, and the game will be designed so that the player can see all the info he needs at a glance.
+As detailed at part 2, the combat system is gonna be light on the engagement aspect but is instead based around calculating numbers and using that to determine who comes out on top. Essentially the player just moves toward the enemies and once they touch the game is gonna calculate how much damage is dealt or taken by both. The hook is then leveling up your by winning battles, becoming stronger and being able to progress through the game. 
+We're gonna be splitting everything up into different components, so that working on the game will be nice, smooth and modular. We're also aiming to make the game as lightweight as possible so optimizing is one of our main challenges and because of that visually the game is gonna be relatively simple and only use 2D assets.
 
 ## 5. Project Management and User Testing
 
-Add something
+Pre-production phase is gonna include concepting, prototyping and confirming what the project needs when it comes to tech. 
+Production phase is then gonna be for actually building the games core mechanics, visuals and maybe sound if we have time.
+Testing phase is to detect bugs and design flaws so we can fix everything and ensure the final product will run smooth.
