@@ -1,5 +1,5 @@
 // player actions here
-// move, attack, use items
+// TODO: Add actions for setting different stats
 
 export const SET_PLAYER_POSITION = "SET_PLAYER_POSITION";
 

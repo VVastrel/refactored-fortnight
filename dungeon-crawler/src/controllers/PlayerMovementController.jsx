@@ -1,39 +1,41 @@
-// Player movement here
-import React, { useEffect } from "react";
+// TODO: Get current playerPosition
+//
+// TODO: Check for collision before moving
 
-const handleKeyDown = (event) => {
-  let newPosition = { x: 0, y: 0 };
+let playerPosition = { x: 0, y: 0 };
 
-  switch (event.key) {
-    case "arrowUp":
-      newPosition = { x: 0, y: -1 };
-      break;
-    case "arrowDown":
-      newPosition = { x: 0, y: 1 };
-      break;
-    case "arrowLeft":
-      newPosition = { x: -1, y: 0 };
-      break;
-    case "arrowRight":
-      newPosition = { x: 1, y: 0 };
-      break;
-    default:
-      return;
-  };
-
-  const MovementController = ({ updatePlayerPosition }) => {
-    const success = updatePlayerPosition(newPosition);
-    console.log(success ? "Move successful" : "Move failed");
-
-  useEffect(() => {
-    window.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, []);
-
-  return null;
+// Mapping of key presses to movement directions
+const keyPressToDirection = {
+  ArrowUp: 'UP',
+  ArrowDown: 'DOWN',
+  ArrowLeft: 'LEFT',
+  ArrowRight: 'RIGHT',
 };
 
-export default MovementController;
+export const movePlayer = (keyPress) => {
+  const direction = keyPressToDirection[keyPress]; // Translate key press to direction
+
+  if (direction) {
+    switch (direction) {
+      case 'UP':
+        playerPosition.y -= 1; // Move up
+        break;
+      case 'DOWN':
+        playerPosition.y += 1; // Move down
+        break;
+      case 'LEFT':
+        playerPosition.x -= 1; // Move left
+        break;
+      case 'RIGHT':
+        playerPosition.x += 1; // Move right
+        break;
+      default:
+        break;
+    }
+
+    //TODO: do some magic here to move the player 
+    console.log('Player Position:', playerPosition);
+  }
+};
+
+export const getPlayerPosition = () => playerPosition;
