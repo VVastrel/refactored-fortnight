@@ -4,7 +4,7 @@ const KeyPressListener = ({ onKeyPress }) => {
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (onKeyPress) {
-        onKeyPress(event.key);
+        onKeyPress(event);
       }
     };
 

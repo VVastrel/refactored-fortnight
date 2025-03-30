@@ -13,10 +13,11 @@ const keyPressToAction = {
 const PlayerControls= () => {
   const { movePlayer } = usePlayerMovement();
 
-  const handleKeyPress = (key) => {
-    const action = keyPressToAction[key];
+  const handleKeyPress = (event) => {
+    const action = keyPressToAction[event.key];
 
     if (action) {
+      event.preventDefault();
       movePlayer(action);
     }
   };
