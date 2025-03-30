@@ -1,13 +1,10 @@
 import React from 'react';
-import GameCanvas from './components/GameCanvas.jsx';
+import Player from './components/Player.jsx';
 
 const App = () => {
   return (
     <div className="app-container">
-      <h1>Totally playable game</h1>
-      <div className="canvas-wrapper">
-        <GameCanvas />
-      </div>
+      <Player />
     </div>
   );
 };
