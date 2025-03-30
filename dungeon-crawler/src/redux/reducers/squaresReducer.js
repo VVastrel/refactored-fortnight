@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import Square from "../../models/Square.js";
 
 const GRID_SIZE = 10; // Define the size of the grid
 const SQUARE_SIZE = 50; // Size of each square in pixels
@@ -13,13 +14,15 @@ const createInitialState = () => {
       const type = isWall ? "Wall" : "Floor";
       const color = isWall ? "darkgray" : "green"; // Colors for walls and floors
 
-      squares.push({
-        x: x * SQUARE_SIZE,
-        y: y * SQUARE_SIZE,
-        type: type,
-        color: color,
-        objects: [], // Initialize with no objects
-      });
+      const square = new Square(
+        `${x}-${y}`, // square id, 0-0, 0-1 ...
+        x * SQUARE_SIZE,
+        y * SQUARE_SIZE,
+        type,
+        color,
+        [], // Initialize with no objects
+      );
+      squares.push(square);
     }
   }
 

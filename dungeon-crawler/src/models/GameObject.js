@@ -1,7 +1,6 @@
 class GameObject {
-  constructor(id, name, type) {
+  constructor(id, type) {
     this.id = id;
-    this.name = name;
     this.type = type;
   }
 }
