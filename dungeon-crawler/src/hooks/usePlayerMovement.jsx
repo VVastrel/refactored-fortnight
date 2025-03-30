@@ -2,15 +2,11 @@
 
 import { setPlayerPosition } from '../redux/actions/playerActions.js';
 import { useDispatch, useSelector } from 'react-redux';
+import { checkCollision } from '../utils/collisionUtils.js';
 
 
 // TODO: Check for collision before moving
 
-// this is just placeholder 
-const checkCollision = (newPosition) => {
-  console.log('Collision check:', newPosition);
-  return false;
-};
 
 export const usePlayerMovement = () => {
   const dispatch = useDispatch();
@@ -39,7 +35,9 @@ export const usePlayerMovement = () => {
       }
 
       // Check for collision before updating the position
-      if (!checkCollision(newPosition)) {
+      const isCollision = checkCollision(newPosition);
+
+      if (!isCollision) {
         // Dispatch the action to update the player's position in Redux
         dispatch(setPlayerPosition(newPosition));
         console.log('Player Position:', newPosition);
