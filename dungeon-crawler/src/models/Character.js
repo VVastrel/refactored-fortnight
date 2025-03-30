@@ -8,8 +8,9 @@ const defaults = {
 
 class Character extends GameObject {
   constructor(id, name, type, stats) {
-    super(id, name, "Character");
-
+    super(id, "Character");
+    this.name = name;
+    this.type = type;
     // Merge stats with defaults, overrides default values if new value is provided
     this.stats = { ...defaults, ...stats };
   }

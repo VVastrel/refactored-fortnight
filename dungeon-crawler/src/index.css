@@ -6,9 +6,3 @@
   height: 100vh;                /* Full viewport height */
   background-color: #f0f0f0;    /* Optional: Background color for better visibility */
 }
-
-.canvas-wrapper {
-  display: flex;               /* Enable Flexbox for the canvas wrapper */
-  justify-content: center;     /* Center the canvas horizontally */
-  align-items: center;         /* Center the canvas vertically */
-}

@@ -1,6 +1,6 @@
 import { SET_PLAYER_POSITION } from "../actions/playerActions.js";
 
-const initialState = { playerPosition: { x: 100, y: 100 } };
+const initialState = { playerPosition: { x: 5, y: 5 } };
 
 const playerReducer = (state = initialState, action) => {
   switch (action.type) {

@@ -32,8 +32,18 @@ const createInitialState = () => {
 const squaresSlice = createSlice({
   name: "squares",
   initialState: createInitialState(), // Use the function to create the initial state
-  reducers: {},
+  reducers: {
+    addGameObjectToSquare: (state, action) => {
+      const { squareId, gameObject } = action.payload;
+      const square = state.find((s) => s.id === squareId);
+      if (square) {
+        square.addGameObject(gameObject);
+      }
+    },
+  },
 });
+
+export const { addGameObjectToSquare } = squaresSlice.actions;
 
 export const selectSquares = (state) => state.squares;
 

@@ -2,6 +2,8 @@ import React, { useRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { selectSquares } from '../redux/reducers/squaresReducer';
 
+// TODO: Draw objects inside squares
+
 const GameCanvas = () => {
   const canvasRef = useRef(null);
   const squares = useSelector(selectSquares); // get squares from redux store

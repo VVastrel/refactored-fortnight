@@ -13,16 +13,16 @@ export const usePlayerMovement = () => {
 
       switch (direction) {
         case 'UP':
-          newPosition.y -= 10; // Move up
+          newPosition.y -= 1; // Move up
           break;
         case 'DOWN':
-          newPosition.y += 10; // Move down
+          newPosition.y += 1; // Move down
           break;
         case 'LEFT':
-          newPosition.x -= 10; // Move left
+          newPosition.x -= 1; // Move left
           break;
         case 'RIGHT':
-          newPosition.x += 10; // Move right
+          newPosition.x += 1; // Move right
           break;
         default:
           break;
