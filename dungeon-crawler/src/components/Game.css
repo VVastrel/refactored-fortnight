@@ -1,0 +1,19 @@
+.canvas-container {
+    position: relative;
+    width: 800px; /* Set to the width of your canvases */
+    height: 600px; /* Set to the height of your canvases */
+}
+
+canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+#GameCanvas {
+    z-index: 1; /* Behind */
+}
+
+#CharacterCanvas {
+    z-index: 2; /* In front */
+}
