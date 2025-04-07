@@ -24,3 +24,11 @@ app.post('/add-data', (req, res) => {
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });
+
+
+
+// Lisää tietokantaan tällä komennolla
+/* curl -X POST http://localhost:3000/add-data \
+-H "Content-Type: application/json" \
+-d '{"column1": "Sample Text", "column2": 42, "column3": "Another Value"}'
+ */
