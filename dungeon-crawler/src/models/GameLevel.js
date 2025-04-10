@@ -1,3 +1,5 @@
+import store from "../redux/store.js";
+import { refreshMap } from "../redux/reducers/mapSlice.js";
 import Tile from "./Tile.js";
 
 class GameLevel {
@@ -42,6 +44,39 @@ class GameLevel {
   createNewLevel() {
     console.log("Generating new level with seed:", this.seed);
     // Future: use seed to generate procedurally
+  }
+
+  moveEnemy(id, direction) {
+    for (let row of this.grid) {
+      for (let tile of row) {
+        const enemy = tile.getGameObjects().find((obj) => obj.id === id);
+        if (enemy) {
+          const newX =
+            direction === "LEFT"
+              ? enemy.x - 1
+              : direction === "RIGHT"
+                ? enemy.x + 1
+                : enemy.x;
+          const newY =
+            direction === "UP"
+              ? enemy.y - 1
+              : direction === "DOWN"
+                ? enemy.y + 1
+                : enemy.y;
+
+          const targetTile = this.getTile(newX, newY);
+          if (!targetTile || targetTile.type === "wall") return false;
+
+          tile.removeGameObjectById(enemy.id);
+          enemy.x = newX;
+          enemy.y = newY;
+          targetTile.addGameObject(enemy);
+          store.dispatch(refreshMap());
+          return true;
+        }
+      }
+    }
+    return false;
   }
 }
 

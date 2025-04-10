@@ -39,6 +39,12 @@ const mapSlice = createSlice({
         tile.removeGameObjectById(gameObjectId);
       }
     },
+    refreshMap: (state) => {
+      return {
+        ...state,
+        gameLevel: { ...state.gameLevel }, // trigger new ferefence
+      };
+    },
   },
 });
 
@@ -47,9 +53,11 @@ export const {
   setTileType,
   addGameObjectToTile,
   removeGameObjectFromTile,
+  refreshMap,
 } = mapSlice.actions;
 
 export const selectGameLevel = (state) => state.map.gameLevel;
+
 export const selectMapSeed = (state) => state.map.seed;
 
 export default mapSlice.reducer;
