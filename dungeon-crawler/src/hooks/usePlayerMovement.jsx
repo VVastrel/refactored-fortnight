@@ -6,10 +6,13 @@ export const usePlayerMovement = () => {
   const dispatch = useDispatch();
   const playerPosition = useSelector(state => state.player.playerPosition);
 
+  const GRID_SIZE = 20;
+
   const movePlayer = (direction) => {
 
     if (direction) {
       let newPosition = { ...playerPosition }; // Get current position from Redux
+      
 
       switch (direction) {
         case 'UP':
@@ -28,6 +31,13 @@ export const usePlayerMovement = () => {
           break;
       }
 
+      if (
+        newPosition.x >= 0 &&
+        newPosition.x < GRID_SIZE &&
+        newPosition.y >= 0 &&
+        newPosition.y < GRID_SIZE
+      ){
+
       // Check for collision before updating the position
       const isCollision = checkCollision(newPosition);
 
@@ -35,6 +45,7 @@ export const usePlayerMovement = () => {
         // Dispatch the action to update the player's position in Redux
         dispatch(setPlayerPosition(newPosition));
         console.log('Player Position:', newPosition);
+      }
       } else {
         console.log('Collision detected! Cannot move.');
       }

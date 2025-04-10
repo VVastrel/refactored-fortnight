@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 
-const fillColors = ['gray', 'green'];
-const strokeColors = ['black', 'darkgreen'];
+const fillColors = ['gray', 'black'];
+//const strokeColors = ['black', 'darkgreen'];
 
 const GameCanvas = ({gameLevel}) => {
   const canvasRef = useRef(null);
@@ -23,7 +23,7 @@ const GameCanvas = ({gameLevel}) => {
       for (let y = 0; y < numberOfSquares; y ++) {
         context.fillStyle = fillColors[gameLevel.getLocation(x,y)];
         context.fillRect(x * squareSize, y * squareSize, squareSize, squareSize);
-        context.strokeStyle = strokeColors[gameLevel.getLocation(x,y)];
+        //context.strokeStyle = strokeColors[gameLevel.getLocation(x,y)];
         context.strokeRect(x * squareSize, y * squareSize, squareSize, squareSize);
       }
     }

@@ -5,6 +5,7 @@ import CharacterCanvas from './CharacterCanvas.jsx';
 import Player from './Player.jsx';
 import { useSelector } from 'react-redux';
 import './Game.css';
+import playerImage from '../assets/spriteSheet.png';
 
 
 const Game = () => {
@@ -13,8 +14,13 @@ const Game = () => {
   const player = { 
     x: playerPosition.x,
     y: playerPosition.y,
-    color: 'blue',
+    color: 'red',
     size: 30,
+    image: playerImage,
+    frameWidth: 32, // Width of a single frame in the spritesheet
+    frameHeight: 32, // Height of a single frame in the spritesheet
+    frameIndex: 0, // Start at the first frame
+    totalFrames: 2, // Total number of frames in the spritesheet
   };
   const objects = [player];
 
@@ -30,3 +36,5 @@ const Game = () => {
 
 
 export default Game;
+ 
+
