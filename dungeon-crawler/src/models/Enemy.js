@@ -1,17 +1,8 @@
-import GameObject from "./GameObject.js";
+import Character from "./Character.js";
 
-const defaults = {
-  hitPoints: 100,
-  damage: 10,
-  // add stats here as needed
-};
-
-class Enemy extends GameObject {
-  constructor(id, name, stats) {
-    super(id, name, "Enemy");
-
-    // Merge stats with defaults, overrides default values if new value is provided
-    this.stats = { ...defaults, ...stats };
+class Enemy extends Character {
+  constructor(id, x, y, sprite) {
+    super(id, "enemy", x, y, sprite, 32, 32, 2); // width, height, frames
   }
 }
 

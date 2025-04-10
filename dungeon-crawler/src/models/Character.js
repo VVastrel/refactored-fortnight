@@ -1,18 +1,65 @@
 import GameObject from "./GameObject.js";
 
-const defaults = {
-  hitPoints: 100,
-  damage: 10,
-  // add stats here as needed
-};
-
 class Character extends GameObject {
-  constructor(id, name, type, stats) {
-    super(id, "Character");
-    this.name = name;
-    this.type = type;
-    // Merge stats with defaults, overrides default values if new value is provided
-    this.stats = { ...defaults, ...stats };
+  constructor(
+    id,
+    type,
+    x,
+    y,
+    sprite,
+    frameWidth,
+    frameHeight,
+    totalFrames = 1,
+  ) {
+    super(id, type); // type will be 'enemy' or 'player'
+    this.x = x;
+    this.y = y;
+    this.size = 50;
+    this.direction = "RIGHT";
+    this.image = sprite;
+    this.frameWidth = frameWidth;
+    this.frameHeight = frameHeight;
+    this.totalFrames = totalFrames;
+
+    this.renderableComponent = {
+      isVisible: true,
+      draw: (ctx, frameIndex) => {
+        const img = new Image();
+        img.src = this.image;
+        const frameX = frameIndex * this.frameWidth;
+
+        ctx.save();
+
+        if (this.direction === "LEFT") {
+          ctx.scale(-1, 1);
+          ctx.drawImage(
+            img,
+            frameX,
+            0,
+            this.frameWidth,
+            this.frameHeight,
+            -(this.x * this.size + this.size),
+            this.y * this.size,
+            this.size,
+            this.size,
+          );
+        } else {
+          ctx.drawImage(
+            img,
+            frameX,
+            0,
+            this.frameWidth,
+            this.frameHeight,
+            this.x * this.size,
+            this.y * this.size,
+            this.size,
+            this.size,
+          );
+        }
+
+        ctx.restore();
+      },
+    };
   }
 }
 
