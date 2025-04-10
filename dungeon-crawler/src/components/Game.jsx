@@ -1,4 +1,4 @@
-import { React, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import GameCanvas from './GameCanvas.jsx';
 import CharacterCanvas from './CharacterCanvas.jsx';
 import Player from './Player.jsx';
