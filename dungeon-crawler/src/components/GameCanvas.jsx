@@ -1,35 +1,44 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { selectGameLevel } from "../redux/reducers/mapSlice.js";
 
-const fillColors = ['gray', 'black'];
-//const strokeColors = ['black', 'darkgreen'];
-
-const GameCanvas = ({gameLevel}) => {
+const GameCanvas = () => {
   const canvasRef = useRef(null);
-  const canvasSize = 600;
-  const numberOfSquares = 20;
+  const gameLevel = useSelector(selectGameLevel);
+  const tileSize = 30;
 
   useEffect(() => {
+    if (!gameLevel) return;
+
     const canvas = canvasRef.current;
-    const context = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
 
-    canvas.width = canvasSize;
-    canvas.height = canvasSize;
+    const drawMap = (ctx) => {
+      const grid = gameLevel.grid;
+      grid.forEach((row, y) => {
+        row.forEach((tile, x) => {
+          const color = tile.type === "wall" ? "gray" : "black";
+          ctx.fillStyle = color;
+          ctx.fillRect(x * tileSize, y * tileSize, tileSize, tileSize);
+          if (color === "gray") {
+            ctx.strokeRect(x * tileSize, y * tileSize, tileSize, tileSize);
+          }
 
-    // Calculate the square size based on the canvas size
-    const squareSize = canvasSize / numberOfSquares;
+          tile.getGameObjects().forEach((obj) => {
+            if (obj.canDraw()) {
+              obj.draw(ctx);
+            }
+          });
+        });
+      });
+    };
 
-    // Draw squares
-    for (let x = 0; x < numberOfSquares; x++) {
-      for (let y = 0; y < numberOfSquares; y ++) {
-        context.fillStyle = fillColors[gameLevel.getLocation(x,y)];
-        context.fillRect(x * squareSize, y * squareSize, squareSize, squareSize);
-        //context.strokeStyle = strokeColors[gameLevel.getLocation(x,y)];
-        context.strokeRect(x * squareSize, y * squareSize, squareSize, squareSize);
-      }
-    }
+    drawMap(ctx);
   }, [gameLevel]);
 
-  return <canvas id="GameCanvas" ref={canvasRef}></canvas>;
+  if (!gameLevel) return null;
+
+  return <canvas ref={canvasRef} width={gameLevel.size * tileSize} height={gameLevel.size * tileSize} />;
 };
 
 export default GameCanvas;

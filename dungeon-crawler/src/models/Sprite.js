@@ -1,27 +1,15 @@
-// Sprite.js
 class Sprite {
-  constructor(width, height, color) {
-    this.width = width; // Width of the sprite
-    this.height = height; // Height of the sprite
-    this.color = color; // Color of the sprite
-    this.isVisible = true; // Indicates if the sprite can be rendered
+  constructor(image, isVisible = true) {
+    this.image = image; // could be HTMLImageElement or color
+    this.isVisible = isVisible;
   }
 
-  getDescription() {
-    return {
-      width: this.width,
-      height: this.height,
-      color: this.color,
-    };
-  }
-
-  draw(context) {
-    if (this.isVisible) {
-      const { width, height, color } = this.getDescription();
-      context.fillStyle = color; // Set the fill color
-      context.fillRect(width, height); // Draw the rectangle
+  draw(ctx, x, y, size = 50) {
+    if (typeof this.image === "string") {
+      ctx.fillStyle = this.image;
+      ctx.fillRect(x * size, y * size, size, size);
+    } else if (this.image instanceof HTMLImageElement) {
+      ctx.drawImage(this.image, x * size, y * size, size, size);
     }
   }
 }
-
-export default Sprite;

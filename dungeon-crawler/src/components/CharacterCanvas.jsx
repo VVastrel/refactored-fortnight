@@ -1,56 +1,95 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useMemo } from 'react';
+import { useSelector } from "react-redux";
+import { selectPlayerPosition, selectEnemies } from "../redux/reducers/playerSlice";
 import { preloadImage, getCurrentFrameX } from '../utils/animationUtils.js';
 import { useAnimation } from '../hooks/useAnimation.js';
+import playerSprite from '../assets/spriteSheet.png';
 
-const ObjectCanvas = ({ objects }) => {
+const CharacterCanvas = () => {
   const canvasRef = useRef(null);
-  const canvasSize = 600;
-  const squareSize = 30;
+  const tileSize = 30;
+  const canvasSize = 20 * tileSize;
 
-  
-  const frameIndex = useAnimation(objects[0]?.totalFrames || 1, 200);
+  const playerPosition = useSelector(selectPlayerPosition);
+  const enemies = useSelector(selectEnemies);
+
+  // Animation frame index
+  const frameIndex = useAnimation(2, 200); // Assuming 4-frame animation
+
+  // Convert player and enemies into objects array used by animation loop
+  const objects = useMemo(() => {
+    const playerObject = {
+      x: playerPosition?.x ?? 0,
+      y: playerPosition?.y ?? 0,
+      size: tileSize,
+      direction: "RIGHT", // For now, assume player faces right
+      image: playerSprite,
+      frameWidth: 32,
+      frameHeight: 32,
+      totalFrames: 4,
+    };
+
+    const enemyObjects = enemies.map((enemy) => ({
+      x: enemy.x,
+      y: enemy.y,
+      size: tileSize,
+      direction: "LEFT", // or enemy.direction
+      image: "/sprites/enemy_walk.png", // Replace with actual path
+      frameWidth: 32,
+      frameHeight: 32,
+      totalFrames: 4,
+    }));
+
+    return [playerObject, ...enemyObjects];
+  }, [playerPosition, enemies]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    const context = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
     canvas.width = canvasSize;
     canvas.height = canvasSize;
 
-    context.imageSmoothingEnabled = false;
+    ctx.imageSmoothingEnabled = false;
 
     let animationFrameId;
 
     const draw = () => {
-      context.clearRect(0, 0, canvasSize, canvasSize);
+      ctx.clearRect(0, 0, canvasSize, canvasSize);
 
       objects.forEach((obj) => {
         const { x, y, size, image, frameWidth, frameHeight, direction } = obj;
 
         const img = preloadImage(image);
+
+        if (!img.complete || img.naturalWidth === 0) {
+          // Don't draw until the image is fully loaded
+          return;
+        }
+
         const currentFrameX = getCurrentFrameX(frameIndex, frameWidth);
 
-        context.save();
+        ctx.save();
 
-        if (direction === 'LEFT') {
-          context.scale(-1, 1);
-          context.drawImage(
+        if (direction === "LEFT") {
+          ctx.scale(-1, 1);
+          ctx.drawImage(
             img,
             currentFrameX, 0,
             frameWidth, frameHeight,
-            -(x * squareSize + size), y * squareSize,
+            -(x * tileSize + size), y * tileSize,
             size, size
           );
         } else {
-          context.drawImage(
+          ctx.drawImage(
             img,
             currentFrameX, 0,
             frameWidth, frameHeight,
-            x * squareSize, y * squareSize,
+            x * tileSize, y * tileSize,
             size, size
           );
         }
 
-        context.restore();
+        ctx.restore();
       });
 
       animationFrameId = requestAnimationFrame(draw);
@@ -59,9 +98,9 @@ const ObjectCanvas = ({ objects }) => {
     animationFrameId = requestAnimationFrame(draw);
 
     return () => cancelAnimationFrame(animationFrameId);
-  }, [objects, frameIndex]); 
+  }, [objects, frameIndex, canvasSize]);
 
-  return <canvas id="CharacterCanvas" ref={canvasRef}></canvas>;
+  return <canvas ref={canvasRef} width={canvasSize} height={canvasSize} />;
 };
 
-export default ObjectCanvas;
+export default CharacterCanvas;

@@ -1,17 +1,25 @@
 class GameObject {
-  constructor(id, type, renderableComponent = null) {
+  constructor(id, type, x = null, y = null, sprite = null) {
     this.id = id;
-    this.type = type;
-    this.renderableComponent = renderableComponent;
+    this.type = type; // "player", "enemy", "item", etc.
+    this.x = x;
+    this.y = y;
+
+    this.sprite = sprite; // Optional: something with a draw() method
+  }
+
+  setPosition(x, y) {
+    this.x = x;
+    this.y = y;
   }
 
   canDraw() {
-    return this.renderableComponent && this.renderableComponent.isVisible;
+    return this.sprite && this.sprite.isVisible;
   }
 
-  draw() {
-    if (this.canDraw() && this.renderableComponent) {
-      this.renderableComponent.draw();
+  draw(ctx) {
+    if (this.canDraw()) {
+      this.sprite.draw(ctx, this.x, this.y);
     }
   }
 }
