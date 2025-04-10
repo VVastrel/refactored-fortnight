@@ -1,17 +1,21 @@
-import store from "../redux/store"; // To access Redux state
+import store from "../redux/store.js";
+import GameLevel from "../models/GameLevel.js";
 
 export const checkCollision = (position) => {
-  const state = store.getState();
-  const gameLevel = state.map.gameLevel;
+  const rawLevel = store.getState().map.gameLevel;
 
-  if (!gameLevel || !gameLevel.getTile) {
-    console.warn("Game level not ready or invalid:", gameLevel);
-    return true; // Fail-safe: prevent movement
+  if (!rawLevel) {
+    console.warn("Game level not ready.");
+    return true;
   }
+
+  // Rehydrate as real GameLevel class
+  const gameLevel = Object.assign(new GameLevel(rawLevel.size), rawLevel);
 
   const tile = gameLevel.getTile(position.x, position.y);
 
   if (!tile || tile.type === "wall") {
+    console.log("Blocked:", tile);
     return true;
   }
 

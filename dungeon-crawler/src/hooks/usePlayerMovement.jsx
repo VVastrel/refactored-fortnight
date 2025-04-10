@@ -4,15 +4,17 @@ import { removeGameObjectFromTile } from "../redux/reducers/mapSlice";
 import { checkCollision } from "../utils/collisionUtils";
 import { selectGameLevel } from "../redux/reducers/mapSlice";
 import { selectPlayerPosition } from "../redux/reducers/playerSlice";
+import GameLevel from "../models/GameLevel.js";
 
 export const usePlayerMovement = () => {
   const dispatch = useDispatch();
   const playerPosition = useSelector(selectPlayerPosition);
-  const gameLevel = useSelector(selectGameLevel);
+  const rawLevel = useSelector(selectGameLevel);
 
   const GRID_SIZE = 20;
 
   const movePlayer = (direction) => {
+    const gameLevel = Object.assign(new GameLevel(rawLevel.size), rawLevel);
     if (!direction || !playerPosition || !gameLevel) return;
 
     const newPosition = { ...playerPosition };

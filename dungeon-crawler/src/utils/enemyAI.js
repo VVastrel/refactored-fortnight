@@ -6,6 +6,7 @@ const directions = ["UP", "DOWN", "LEFT", "RIGHT"];
 export const startEnemyAI = () => {
   setInterval(() => {
     const state = store.getState();
+    if (state.game.isPaused || state.game.mode !== "realtime") return;
     const rawLevel = state.map.gameLevel;
     const gameLevel = Object.assign(new GameLevel(rawLevel.size), rawLevel);
 
