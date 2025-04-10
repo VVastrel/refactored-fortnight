@@ -14,7 +14,7 @@ class Character extends GameObject {
     super(id, type); // type will be 'enemy' or 'player'
     this.x = x;
     this.y = y;
-    this.size = 50;
+    this.size = 30;
     this.direction = "RIGHT";
     this.image = sprite;
     this.frameWidth = frameWidth;

@@ -1,11 +1,18 @@
 import { createSlice } from "@reduxjs/toolkit";
 import GameLevel from "../../models/GameLevel.js";
+import Enemy from "../../models/Enemy.js";
+import enemySprite from "../../assets/spr_skl_1.png";
 
 const GRID_SIZE = 20;
+const gameLevel = new GameLevel(GRID_SIZE);
+
+// Add a test enemy to position (10, 10)
+const testEnemy = new Enemy("enemy-001", 10, 10, enemySprite);
+gameLevel.addObjectToTile(testEnemy.x, testEnemy.y, testEnemy);
 
 const initialState = {
   seed: null, // future-proof
-  gameLevel: new GameLevel(GRID_SIZE),
+  gameLevel: gameLevel,
 };
 
 const mapSlice = createSlice({

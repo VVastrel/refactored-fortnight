@@ -1,9 +1,10 @@
 import React, { useRef, useEffect, useMemo } from 'react';
 import { useSelector } from "react-redux";
-import { selectPlayerPosition, selectEnemies } from "../redux/reducers/playerSlice";
+import { selectPlayerPosition  } from "../redux/reducers/playerSlice";
 import { preloadImage, getCurrentFrameX } from '../utils/animationUtils.js';
 import { useAnimation } from '../hooks/useAnimation.js';
 import playerSprite from '../assets/spriteSheet.png';
+import enemySprite from '../assets/spr_skl_1.png';
 
 const CharacterCanvas = () => {
   const canvasRef = useRef(null);
@@ -11,39 +12,49 @@ const CharacterCanvas = () => {
   const canvasSize = 20 * tileSize;
 
   const playerPosition = useSelector(selectPlayerPosition);
-  const enemies = useSelector(selectEnemies);
+  const gameLevel = useSelector((state) => state.map.gameLevel);
+  //const enemies = useSelector(selectEnemies);
 
   // Animation frame index
   const frameIndex = useAnimation(2, 200); // Assuming 4-frame animation
 
   // Convert player and enemies into objects array used by animation loop
-  const objects = useMemo(() => {
-    const playerObject = {
-      x: playerPosition?.x ?? 0,
-      y: playerPosition?.y ?? 0,
-      size: tileSize,
-      direction: "RIGHT", // For now, assume player faces right
-      image: playerSprite,
-      frameWidth: 32,
-      frameHeight: 32,
-      totalFrames: 4,
-    };
 
-    const enemyObjects = enemies.map((enemy) => ({
-      x: enemy.x,
-      y: enemy.y,
-      size: tileSize,
-      direction: "LEFT", // or enemy.direction
-      image: "/sprites/enemy_walk.png", // Replace with actual path
-      frameWidth: 32,
-      frameHeight: 32,
-      totalFrames: 4,
-    }));
+const objects = useMemo(() => {
+  const playerObject = {
+    x: playerPosition?.x ?? 0,
+    y: playerPosition?.y ?? 0,
+    size: tileSize,
+    direction: "RIGHT",
+    image: playerSprite,
+    frameWidth: 32,
+    frameHeight: 32,
+    totalFrames: 2,
+  };
 
-    return [playerObject, ...enemyObjects];
-  }, [playerPosition, enemies]);
+  const enemyList = [];
 
-  useEffect(() => {
+  if (gameLevel && gameLevel.grid) {
+    gameLevel.grid.forEach((row) => {
+      row.forEach((tile) => {
+        tile.getGameObjects().forEach((obj) => {
+          if (obj.type === "enemy") {
+            enemyList.push({
+              ...obj,
+              image: enemySprite,
+              frameWidth: 32,
+              frameHeight: 32,
+              totalFrames: 2,
+            });
+          }
+        });
+      });
+    });
+  }
+
+  return [playerObject, ...enemyList];
+}, [playerPosition, gameLevel]);
+ useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
     canvas.width = canvasSize;
@@ -62,6 +73,8 @@ const CharacterCanvas = () => {
         const img = preloadImage(image);
 
         if (!img.complete || img.naturalWidth === 0) {
+          ctx.fillStyle = "red";
+          ctx.fillRect(x * tileSize, y * tileSize, size, size);
           // Don't draw until the image is fully loaded
           return;
         }
