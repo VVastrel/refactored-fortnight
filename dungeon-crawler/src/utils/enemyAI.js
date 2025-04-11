@@ -1,10 +1,15 @@
-import store from "../redux/store.js";
+import { rehydrateGameLevel } from "./rehydrateGameLevel";
+import { rehydratePlayer } from "./rehydratePlayer";
+import { performAttack } from "./combatUtils";
+import store from "../redux/store";
 import { refreshMap } from "../redux/reducers/mapSlice";
-import GameLevel from "../models/GameLevel";
 
 const directions = ["UP", "DOWN", "LEFT", "RIGHT"];
 
-export const processEnemyTurn = (gameLevel, playerPosition) => {
+export const processEnemyTurn = (gameLevel) => {
+  const player = rehydratePlayer();
+  if (!player) return;
+
   const enemies = [];
 
   gameLevel.grid.forEach((row) => {
@@ -18,18 +23,28 @@ export const processEnemyTurn = (gameLevel, playerPosition) => {
   });
 
   enemies.forEach((enemy) => {
-    const dx = playerPosition.x - enemy.x;
-    const dy = playerPosition.y - enemy.y;
-    const distance = Math.abs(dx) + Math.abs(dy);
+    const dx = Math.abs(enemy.x - player.x);
+    const dy = Math.abs(enemy.y - player.y);
+    const isAdjacent = dx + dy === 1;
 
+    if (isAdjacent) {
+      console.log(`${enemy.id} attacks the player!`);
+      performAttack(enemy, player);
+      return; // Don't move if attacking
+    }
+
+    const distanceToPlayer = dx + dy;
     let direction;
 
-    if (distance <= 5) {
-      if (Math.abs(dx) > Math.abs(dy)) {
-        direction = dx > 0 ? "RIGHT" : "LEFT";
-      } else {
-        direction = dy > 0 ? "DOWN" : "UP";
-      }
+    if (distanceToPlayer <= 5) {
+      direction =
+        Math.abs(dx) > Math.abs(dy)
+          ? player.x > enemy.x
+            ? "RIGHT"
+            : "LEFT"
+          : player.y > enemy.y
+            ? "DOWN"
+            : "UP";
     } else {
       direction = directions[Math.floor(Math.random() * directions.length)];
     }
@@ -38,26 +53,25 @@ export const processEnemyTurn = (gameLevel, playerPosition) => {
   });
 };
 
-// realtime mode
+// 🕐 Realtime mode
 export const startEnemyAI = () => {
   setInterval(() => {
     const state = store.getState();
     if (state.game.isPaused || state.game.mode !== "realtime") return;
 
-    const rawLevel = state.map.gameLevel;
-    const gameLevel = Object.assign(new GameLevel(rawLevel.size), rawLevel);
-    const playerPosition = state.player.playerPosition;
+    const gameLevel = rehydrateGameLevel();
+    if (!gameLevel) return;
 
-    if (!gameLevel || !gameLevel.grid) return;
-
-    processEnemyTurn(gameLevel, playerPosition);
+    processEnemyTurn(gameLevel);
     store.dispatch(refreshMap());
   }, 1000);
 };
 
-// turn mode
-export const runEnemyTurn = (playerPosition, rawLevel) => {
-  const gameLevel = Object.assign(new GameLevel(rawLevel.size), rawLevel);
-  processEnemyTurn(gameLevel, playerPosition);
+// 🔁 Turn mode
+export const runEnemyTurn = () => {
+  const gameLevel = rehydrateGameLevel();
+  if (!gameLevel) return;
+
+  processEnemyTurn(gameLevel);
   store.dispatch(refreshMap());
 };

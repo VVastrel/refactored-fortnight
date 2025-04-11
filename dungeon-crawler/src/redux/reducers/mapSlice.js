@@ -45,6 +45,7 @@ const mapSlice = createSlice({
         gameLevel: { ...state.gameLevel }, // trigger new ferefence
       };
     },
+    resetMap: () => initialState,
   },
 });
 
@@ -54,6 +55,7 @@ export const {
   addGameObjectToTile,
   removeGameObjectFromTile,
   refreshMap,
+  resetMap,
 } = mapSlice.actions;
 
 export const selectGameLevel = (state) => state.map.gameLevel;

@@ -8,7 +8,7 @@ export const handleTileInteraction = (tile, player, dispatch) => {
   const enemy = tile.getGameObjects().find((obj) => obj.type === "enemy");
 
   if (enemy) {
-    console.log(`Combat! Player attacks ${enemy.id}`);
+    //console.log(`Combat! Player attacks ${enemy.id}`);
     const result = performAttack(player, enemy);
 
     if (result.killed) {

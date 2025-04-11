@@ -10,6 +10,7 @@ const initialState = {
     experience: 0,
     level: 1,
   },
+  isDead: false,
   inventory: [],
 };
 
@@ -21,7 +22,12 @@ const playerSlice = createSlice({
       state.playerPosition = action.payload;
     },
     takeDamage(state, action) {
-      state.stats.hp = Math.max(0, state.stats.hp - action.payload);
+      const newHp = Math.max(0, state.stats.hp - action.payload);
+      state.stats.hp = newHp;
+
+      if (newHp === 0) {
+        state.isDead = true;
+      }
     },
     healPlayer(state, action) {
       state.stats.hp = Math.min(
@@ -41,6 +47,7 @@ const playerSlice = createSlice({
     clearInventory(state) {
       state.inventory = [];
     },
+    resetPlayer: () => initialState,
   },
 });
 
@@ -52,6 +59,7 @@ export const {
   healPlayer,
   setStats,
   gainExperience,
+  resetPlayer,
 } = playerSlice.actions;
 
 export const selectPlayer = (state) => state.player;

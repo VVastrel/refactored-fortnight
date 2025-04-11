@@ -13,10 +13,16 @@ export const usePlayerMovement = () => {
   const playerPosition = useSelector(selectPlayerPosition);
   const rawLevel = useSelector(selectGameLevel);
   const gameMode = useSelector((state) => state.game.mode);
+  const isDead = useSelector((state) => state.player.isDead);
 
   const GRID_SIZE = 20;
 
   const movePlayer = (direction) => {
+    if (isDead) { 
+      console.log("Dead men can't walk! (Except Mr. Skeleton of course)");
+      return;
+    }
+
     if (!direction || !playerPosition || !rawLevel) return;
 
     const newPosition = { ...playerPosition };
