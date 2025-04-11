@@ -1,16 +1,18 @@
 import { useDispatch, useSelector } from "react-redux";
-import { setPlayerPosition, selectPlayerPosition, addItemToInventory } from "../redux/reducers/playerSlice";
+import { setPlayerPosition, selectPlayerPosition } from "../redux/reducers/playerSlice";
+import { selectGameLevel } from "../redux/reducers/mapSlice";
 import { checkCollision } from "../utils/collisionUtils";
-import { selectGameLevel, removeGameObjectFromTile } from "../redux/reducers/mapSlice";
+import { rehydratePlayer } from "../utils/rehydratePlayer";
+import { rehydrateGameLevel } from "../utils/rehydrateGameLevel";
+import { handleTileInteraction } from "../utils/handleTileInteraction";
+import GameLevel from "../models/GameLevel";
 import { runEnemyTurn } from "../utils/enemyAI";
-import GameLevel from "../models/GameLevel.js";
-import { useSelector as useAppSelector } from "react-redux";
 
 export const usePlayerMovement = () => {
   const dispatch = useDispatch();
   const playerPosition = useSelector(selectPlayerPosition);
   const rawLevel = useSelector(selectGameLevel);
-  const gameMode = useAppSelector((state) => state.game.mode);
+  const gameMode = useSelector((state) => state.game.mode);
 
   const GRID_SIZE = 20;
 
@@ -19,7 +21,6 @@ export const usePlayerMovement = () => {
 
     const newPosition = { ...playerPosition };
 
-    // Determine movement
     switch (direction) {
       case "UP": newPosition.y -= 1; break;
       case "DOWN": newPosition.y += 1; break;
@@ -43,34 +44,34 @@ export const usePlayerMovement = () => {
       return;
     }
 
-    // Rehydrate map and get tile
-    const gameLevel = Object.assign(new GameLevel(rawLevel.size), rawLevel);
-    const tile = gameLevel.getTile(newPosition.x, newPosition.y);
-
-    if (!tile) {
-      console.warn("Invalid tile.");
+    // Rehydrate state
+    const gameLevel = rehydrateGameLevel();
+    if (!gameLevel) {
+      console.warn("Could not rehydrate GameLevel.");
       return;
     }
 
-    // Check for item and pick it up
-    const item = tile.getGameObjects().find((obj) => obj.type === "item");
-    if (item) {
-      console.log("Picked up item:", item.id);
-      dispatch(addItemToInventory(item));
-      dispatch(removeGameObjectFromTile({
-        x: newPosition.x,
-        y: newPosition.y,
-        gameObjectId: item.id,
-      }));
+    const tile = gameLevel.getTile(newPosition.x, newPosition.y);
+    if (!tile) {
+      console.warn("Tile not found at position:", newPosition);
+      return;
     }
+
+    const player = rehydratePlayer();
+
+    if (!tile || !player) return;
+
+    // Handle tile interaction (e.g., combat, item pickup)
+    const interactionBlockedMovement = handleTileInteraction(tile, player, dispatch);
+    if (interactionBlockedMovement) return;
 
     // Move player
     dispatch(setPlayerPosition(newPosition));
     console.log("Player Position:", newPosition);
 
-    // Trigger enemy reaction in turn-based mode
+    // Run enemy turn in turn mode
     if (gameMode === "turn") {
-      runEnemyTurn(newPosition, rawLevel); // handles AI + refreshMap
+      runEnemyTurn(newPosition, rawLevel);
     }
   };
 
