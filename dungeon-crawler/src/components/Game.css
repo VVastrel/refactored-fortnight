@@ -17,3 +17,33 @@ canvas {
 #CharacterCanvas {
     z-index: 2; /* In front */
 }
+
+.main-menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 25vh;
+    background-color: #000000;
+    color: white;
+}
+
+.main-menu h1 {
+    font-size: 3rem;
+    margin-bottom: 2rem;
+}
+
+.main-menu button {
+    font-size: 1.5rem;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    padding: 0.5rem 2rem;
+    cursor: pointer;
+    background-color: #000000;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+.main-menu button:hover {
+    background-color: #ffffff;
+}

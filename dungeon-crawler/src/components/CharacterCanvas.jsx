@@ -16,7 +16,7 @@ const CharacterCanvas = () => {
   //const enemies = useSelector(selectEnemies);
 
   // Animation frame index
-  const frameIndex = useAnimation(2, 200); // Assuming 4-frame animation
+  const frameIndex = useAnimation(2, 400); // Assuming 4-frame animation
 
   // Convert player and enemies into objects array used by animation loop
 
