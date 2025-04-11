@@ -1,5 +1,5 @@
-import GameLevel from "../models/GameLevel.js";
-import { store } from "../redux/store";
+import GameLevel from "../models/GameLevel";
+import store from "../redux/store";
 
 export const rehydrateGameLevel = () => {
   const raw = store.getState().map.gameLevel;

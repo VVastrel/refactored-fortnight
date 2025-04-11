@@ -1,5 +1,5 @@
 import Player from "../models/Player";
-import { store } from "../redux/store";
+import store from "../redux/store";
 import playerSprite from "../assets/spriteSheet.png";
 
 export const rehydratePlayer = () => {

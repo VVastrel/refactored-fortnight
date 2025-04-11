@@ -1,6 +1,6 @@
-import { store } from "../redux/store.js";
-import { takeDamage } from "../redux/reducers/playerSlice.js";
-import { damageEnemy, removeEnemy } from "../redux/reducers/enemySlice.js";
+import store from "../redux/store";
+import { takeDamage } from "../redux/reducers/playerSlice";
+import { damageEnemy, removeEnemy } from "../redux/reducers/enemySlice";
 
 /**
  * Executes attack from one character to another.
