@@ -7,7 +7,7 @@ class Player extends Character {
       hp: 10,
       maxHp: 10,
       attack: 2,
-      defence: 1,
+      defense: 1,
       level: 1,
       experience: 0,
     };

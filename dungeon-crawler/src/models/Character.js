@@ -70,8 +70,8 @@ class Character extends GameObject {
     return this.stats?.attack ?? 0;
   }
 
-  getDefence() {
-    return this.stats?.defence ?? 0;
+  getDefense() {
+    return this.stats?.defense ?? 0;
   }
 }
 
