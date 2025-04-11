@@ -61,6 +61,18 @@ class Character extends GameObject {
       },
     };
   }
+
+  isAlive() {
+    return this.stats?.hp > 0;
+  }
+
+  getAttackPower() {
+    return this.stats?.attack ?? 0;
+  }
+
+  getDefence() {
+    return this.stats?.defence ?? 0;
+  }
 }
 
 export default Character;
