@@ -6,6 +6,7 @@ import Player from './Player.jsx';
 import MainMenu from './Menu.jsx';
 import GameOverOverlay from "./GameOverOverlay.jsx";
 import { startEnemyAI } from "../utils/enemyAI.js";
+import PlayerStats from "./GameUI.jsx";
 import './Game.css';
 
 const Game = () => {
@@ -29,6 +30,7 @@ const Game = () => {
           <GameCanvas />
           <CharacterCanvas />
           <Player />
+          <PlayerStats /> 
           {isDead && <GameOverOverlay />}
         </>
       ) : (
