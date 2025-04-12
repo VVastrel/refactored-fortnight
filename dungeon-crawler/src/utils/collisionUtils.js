@@ -1,21 +1,19 @@
-import store from "../redux/store.js";
-import GameLevel from "../models/GameLevel.js";
+import { GameWorld } from "../core/GameWorld";
 
+/**
+ * Checks if the tile at the given position is blocked (wall or other logic).
+ * Returns true if movement is blocked.
+ */
 export const checkCollision = (position) => {
-  const rawLevel = store.getState().map.gameLevel;
+  const tile = GameWorld.getTile(position.x, position.y);
 
-  if (!rawLevel) {
-    console.warn("Game level not ready.");
+  if (!tile) {
+    console.warn(`No tile found at (${position.x}, ${position.y})`);
     return true;
   }
 
-  // Rehydrate as real GameLevel class
-  const gameLevel = Object.assign(new GameLevel(rawLevel.size), rawLevel);
-
-  const tile = gameLevel.getTile(position.x, position.y);
-
-  if (!tile || tile.type === "wall") {
-    console.log("Blocked:", tile);
+  if (tile.type === "wall") {
+    console.log("Blocked by wall at:", position);
     return true;
   }
 

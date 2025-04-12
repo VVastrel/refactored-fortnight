@@ -1,29 +1,25 @@
 import { useDispatch, useSelector } from "react-redux";
 import { setPlayerPosition, selectPlayerPosition } from "../redux/reducers/playerSlice";
-import { selectGameLevel } from "../redux/reducers/mapSlice";
 import { checkCollision } from "../utils/collisionUtils";
-import { rehydratePlayer } from "../utils/rehydratePlayer";
-import { rehydrateGameLevel } from "../utils/rehydrateGameLevel";
 import { handleTileInteraction } from "../utils/handleTileInteraction";
-import GameLevel from "../models/GameLevel";
-import { runEnemyTurn } from "../utils/enemyAI";
+import { runEnemyTurn } from "../systems/EnemyAI";
+import { GameWorld } from "../core/GameWorld";
 
 export const usePlayerMovement = () => {
   const dispatch = useDispatch();
   const playerPosition = useSelector(selectPlayerPosition);
-  const rawLevel = useSelector(selectGameLevel);
   const gameMode = useSelector((state) => state.game.mode);
   const isDead = useSelector((state) => state.player.isDead);
 
   const GRID_SIZE = 20;
 
   const movePlayer = (direction) => {
-    if (isDead) { 
-      console.log("Dead men can't walk! (Except Mr. Skeleton of course)");
+    if (isDead) {
+      console.log("Dead men can't walk! (Except Mr. Skeleton 🦴)");
       return;
     }
 
-    if (!direction || !playerPosition || !rawLevel) return;
+    if (!direction || !playerPosition) return;
 
     const newPosition = { ...playerPosition };
 
@@ -50,34 +46,30 @@ export const usePlayerMovement = () => {
       return;
     }
 
-    // Rehydrate state
-    const gameLevel = rehydrateGameLevel();
-    if (!gameLevel) {
-      console.warn("Could not rehydrate GameLevel.");
-      return;
-    }
-
-    const tile = gameLevel.getTile(newPosition.x, newPosition.y);
+    // Get current tile from GameWorld
+    const tile = GameWorld.getTile(newPosition.x, newPosition.y);
     if (!tile) {
       console.warn("Tile not found at position:", newPosition);
       return;
     }
 
-    const player = rehydratePlayer();
+    const player = GameWorld.getObject("player");
+    if (!player) {
+      console.warn("Player object not found in GameWorld.");
+      return;
+    }
 
-    if (!tile || !player) return;
+    // Handle tile interaction (combat, items, etc.)
+    const blocked = handleTileInteraction(tile, player, dispatch);
+    if (blocked) return;
 
-    // Handle tile interaction (e.g., combat, item pickup)
-    const interactionBlockedMovement = handleTileInteraction(tile, player, dispatch);
-    if (interactionBlockedMovement) return;
-
-    // Move player
+    // Move player (Redux updates position)
     dispatch(setPlayerPosition(newPosition));
     console.log("Player Position:", newPosition);
 
-    // Run enemy turn in turn mode
+    // If in turn mode, trigger enemy AI
     if (gameMode === "turn") {
-      runEnemyTurn(newPosition, rawLevel);
+      runEnemyTurn();
     }
   };
 

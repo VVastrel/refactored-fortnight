@@ -1,4 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
+import {
+  ANIMATION_FRAME_DURATION,
+  DEFAULT_FRAME_COUNT,
+} from "../config/constants";
 
 export const useAnimation = (totalFrames, frameRate) => {
   const [frameIndex, setFrameIndex] = useState(0);
@@ -13,3 +17,4 @@ export const useAnimation = (totalFrames, frameRate) => {
 
   return frameIndex;
 };
+

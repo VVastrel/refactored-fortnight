@@ -1,41 +1,34 @@
-import React, { useState, useEffect } from 'react';
-import { useSelector } from "react-redux";
-import GameCanvas from './GameCanvas.jsx';
-import CharacterCanvas from './CharacterCanvas.jsx';
-import Player from './Player.jsx';
-import MainMenu from './Menu.jsx';
-import GameOverOverlay from "./GameOverOverlay.jsx";
-import { startEnemyAI } from "../utils/enemyAI.js";
-import PlayerStats from "./GameUI.jsx";
-import './Game.css';
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import GameCanvas from "./GameCanvas";
+import CharacterCanvas from "./CharacterCanvas";
+import PlayerControls from "./PlayerControls";
+import { generateMapWithSeed } from "../redux/reducers/mapSlice";
+import { resetPlayer } from "../redux/reducers/playerSlice";
+import { hydrateWorld } from "../utils/hydrateWorld";
+import GameLoop from "../core/GameLoop";
+import "./Game.css";
 
 const Game = () => {
-  const isDead = useSelector((state) => state.player.isDead);
-  const [isGameStarted, setIsGameStarted] = useState(false);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    if (isGameStarted) {
-      startEnemyAI();
-    }
-  }, [isGameStarted]);
+    // Start new game on mount
+    dispatch(resetPlayer());
+    dispatch(generateMapWithSeed());
+    hydrateWorld();
+    GameLoop.start("turn"); // or "realtime"
 
-  const handleStartGame = () => {
-    setIsGameStarted(true);
-  };
+    return () => {
+      GameLoop.stop(); // Cleanup on unmount
+    };
+  }, [dispatch]);
 
   return (
-    <div className="canvas-container">
-      {isGameStarted ? (
-        <>
-          <GameCanvas />
-          <CharacterCanvas />
-          <Player />
-          <PlayerStats /> 
-          {isDead && <GameOverOverlay />}
-        </>
-      ) : (
-        <MainMenu onStartGame={handleStartGame} />
-      )}
+    <div className="game-container">
+      <GameCanvas />
+      <CharacterCanvas />
+      <PlayerControls />
     </div>
   );
 };

@@ -1,7 +1,21 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  enemies: [],
+  enemies: [
+    // Example format:
+    // {
+    //   id: "enemy-001",
+    //   type: "enemy",
+    //   x: 8,
+    //   y: 8,
+    //   stats: {
+    //     hp: 5,
+    //     maxHp: 5,
+    //     attack: 1,
+    //     defense: 0,
+    //   },
+    // }
+  ],
 };
 
 const enemySlice = createSlice({
@@ -19,23 +33,40 @@ const enemySlice = createSlice({
     damageEnemy(state, action) {
       const { id, damage } = action.payload;
       const enemy = state.enemies.find((e) => e.id === id);
-      if (enemy) {
-        enemy.hp = Math.max(0, enemy.hp - damage);
+      if (enemy && enemy.stats) {
+        enemy.stats.hp = Math.max(0, enemy.stats.hp - damage);
       }
     },
-    updateEnemy(state, action) {
-      const { id, changes } = action.payload;
+    moveEnemy(state, action) {
+      const { id, x, y } = action.payload;
       const enemy = state.enemies.find((e) => e.id === id);
       if (enemy) {
-        Object.assign(enemy, changes);
+        enemy.x = x;
+        enemy.y = y;
       }
     },
+    setEnemyStats(state, action) {
+      const { id, stats } = action.payload;
+      const enemy = state.enemies.find((e) => e.id === id);
+      if (enemy) {
+        enemy.stats = { ...enemy.stats, ...stats };
+      }
+    },
+    resetEnemies: () => initialState,
   },
 });
 
-export const { addEnemy, removeEnemy, damageEnemy, updateEnemy } =
-  enemySlice.actions;
+export const {
+  addEnemy,
+  removeEnemy,
+  damageEnemy,
+  moveEnemy,
+  setEnemyStats,
+  resetEnemies,
+} = enemySlice.actions;
 
 export const selectEnemies = (state) => state.enemies.enemies;
+export const selectEnemyById = (id) => (state) =>
+  state.enemies.enemies.find((e) => e.id === id);
 
 export default enemySlice.reducer;

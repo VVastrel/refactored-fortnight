@@ -1,41 +1,51 @@
 import GameObject from "./GameObject.js";
 
-class Tile {
-  constructor(id, x, y, type = "floor") {
-    this.id = id;
-    this.x = x;
-    this.y = y;
-    this.type = type; // "floor", "wall", etc.
-    this.contents = []; // GameObjects like items, enemies, player
+class Tile extends GameObject {
+  constructor(x, y, type = "floor", sprite = null) {
+    // Use "tile-x-y" as the ID to keep it unique
+    const id = `tile-${x}-${y}`;
+    super(id, "tile", x, y, sprite);
+
+    this.type = type;
+    this.gameObjects = []; // objects on this tile (player, enemies, items)
+  }
+
+  addGameObject(gameObject) {
+    if (!this.gameObjects.find((obj) => obj.id === gameObject.id)) {
+      this.gameObjects.push(gameObject);
+    }
+  }
+
+  removeGameObjectById(id) {
+    this.gameObjects = this.gameObjects.filter((obj) => obj.id !== id);
+  }
+
+  hasGameObject(id) {
+    return this.gameObjects.some((obj) => obj.id === id);
+  }
+
+  getGameObjects() {
+    return this.gameObjects;
+  }
+
+  getFirstObjectOfType(type) {
+    return this.gameObjects.find((obj) => obj.type === type);
   }
 
   isWalkable() {
     return this.type === "floor";
   }
 
-  addGameObject(gameObject) {
-    if (gameObject instanceof GameObject) {
-      gameObject.setPosition(this.x, this.y); // Ensure it knows its location
-      this.contents.push(gameObject);
-    } else {
-      console.warn("Only GameObjects can be added to a tile");
+  draw(ctx, frameIndex = 0) {
+    // Draw the tile itself
+    super.draw(ctx, frameIndex);
+
+    // Optionally: draw the objects on top (for debug or visual layering)
+    for (const obj of this.gameObjects) {
+      if (obj.canDraw()) {
+        obj.draw(ctx, frameIndex);
+      }
     }
-  }
-
-  removeGameObjectById(id) {
-    this.contents = this.contents.filter((obj) => obj.id !== id);
-  }
-
-  getGameObjects() {
-    return this.contents;
-  }
-
-  hasType(type) {
-    return this.contents.some((obj) => obj.type === type);
-  }
-
-  getFirstObjectOfType(type) {
-    return this.contents.find((obj) => obj.type === type);
   }
 }
 

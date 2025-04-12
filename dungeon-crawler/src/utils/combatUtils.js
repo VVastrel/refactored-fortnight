@@ -1,39 +1,63 @@
 import store from "../redux/store";
-import { takeDamage } from "../redux/reducers/playerSlice";
-import { damageEnemy, removeEnemy } from "../redux/reducers/enemySlice";
+import { takeDamage, selectPlayerStats } from "../redux/reducers/playerSlice";
+import {
+  damageEnemy,
+  removeEnemy,
+  selectEnemies,
+} from "../redux/reducers/enemySlice";
 
 /**
- * Executes attack from one character to another.
- * Both must be instances of Character or subclasses
- * */
-
+ * Executes an attack between two game objects.
+ * Assumes Redux holds the source of truth for stats.
+ */
 export const performAttack = (attacker, defender) => {
-  const attack = attacker.getAttackPower();
-  const defense = defender.getDefense();
+  const state = store.getState();
+
+  // Pull stats for both attacker and defender from Redux
+  const attackerStats = getStatsForObject(attacker, state);
+  const defenderStats = getStatsForObject(defender, state);
+
+  if (!attackerStats || !defenderStats) {
+    console.warn(
+      "Missing stats for attacker or defender:",
+      attacker.id,
+      defender.id,
+    );
+    return { killed: false };
+  }
+
+  const attack = attackerStats.attack ?? 0;
+  const defense = defenderStats.defense ?? 0;
   const damage = Math.max(0, attack - defense);
 
   console.log(`${attacker.id} attacks ${defender.id} for ${damage} damage`);
 
   if (defender.type === "player") {
-    // Apply damage to player
     store.dispatch(takeDamage(damage));
-    const hp = store.getState().player.stats.hp;
-    console.log(`Player HP: ${hp}`);
+    const newHp = store.getState().player.stats.hp;
+    return { killed: newHp <= 0 };
+  }
 
-    return { killed: hp <= 0 };
-  } else {
-    // Apply damage to enemy
+  if (defender.type === "enemy") {
     store.dispatch(damageEnemy({ id: defender.id, damage }));
-
-    // If enemy is killed, remove enemy.
-    const updated = store
-      .getState()
-      .enemies.enemies.find((e) => e.id === defender.id);
-    if (updated && updated.hp <= 0) {
+    const updatedEnemy = selectEnemies(store.getState()).find(
+      (e) => e.id === defender.id,
+    );
+    if (updatedEnemy?.stats?.hp <= 0) {
       store.dispatch(removeEnemy(defender.id));
-      console.log(`${defender.id} was defeated`);
       return { killed: true };
     }
-    return { killed: false };
   }
+
+  return { killed: false };
+};
+
+// Utility to get object stats based on type/id
+const getStatsForObject = (object, state) => {
+  if (object.type === "player") return selectPlayerStats(state);
+  if (object.type === "enemy") {
+    const enemy = selectEnemies(state).find((e) => e.id === object.id);
+    return enemy?.stats ?? null;
+  }
+  return null;
 };

@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
+  id: "player-001", // link between object & stats
   playerPosition: { x: 5, y: 5 },
   stats: {
     hp: 10,
@@ -66,5 +67,16 @@ export const selectPlayer = (state) => state.player;
 export const selectPlayerPosition = (state) => state.player.playerPosition;
 export const selectPlayerStats = (state) => state.player.stats;
 export const selectInventory = (state) => state.player.inventory;
+export const selectPlayerId = (state) => state.player.id;
+export const selectPlayerDataById = (id) => (state) =>
+  id === state.player.id
+    ? {
+        id: state.player.id,
+        x: state.player.playerPosition.x,
+        y: state.player.playerPosition.y,
+        stats: state.player.stats,
+        isDead: state.player.isDead,
+      }
+    : null;
 
 export default playerSlice.reducer;

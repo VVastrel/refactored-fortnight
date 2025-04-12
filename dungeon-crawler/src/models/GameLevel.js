@@ -1,6 +1,7 @@
-import store from "../redux/store.js";
-import { refreshMap } from "../redux/reducers/mapSlice.js";
-import Tile from "./Tile.js";
+import Tile from "./Tile";
+import wallSpritePath from "../assets/spr_wll.png";
+import { preloadImage } from "../utils/animationUtils";
+import Sprite from "./Sprite"; // Assuming sprite lives here
 
 class GameLevel {
   constructor(size, seed = null) {
@@ -11,15 +12,21 @@ class GameLevel {
 
   createDefaultLevel() {
     const grid = [];
+    const wallImage = preloadImage(wallSpritePath);
 
     for (let y = 0; y < this.size; y++) {
       const row = [];
       for (let x = 0; x < this.size; x++) {
-        const type =
-          x === 0 || x === this.size - 1 || y === 0 || y === this.size - 1
-            ? "wall"
-            : "floor";
-        row.push(new Tile(`${x}-${y}`, x, y, type));
+        const isWall =
+          x === 0 || x === this.size - 1 || y === 0 || y === this.size - 1;
+
+        const type = isWall ? "wall" : "floor";
+
+        const sprite = new Sprite({
+          image: isWall ? wallImage : "#000", // floor fallback is just black
+        });
+
+        row.push(new Tile(x, y, type, sprite));
       }
       grid.push(row);
     }
@@ -28,12 +35,18 @@ class GameLevel {
   }
 
   getTile(x, y) {
-    return this.grid[y]?.[x];
+    return this.grid?.[y]?.[x] ?? null;
   }
 
-  setTileType(x, y, newType) {
+  setTileType(x, y, newType, newSprite = null) {
     const tile = this.getTile(x, y);
-    if (tile) tile.type = newType;
+    if (!tile) return;
+
+    tile.type = newType;
+
+    if (newSprite) {
+      tile.sprite = newSprite;
+    }
   }
 
   addObjectToTile(x, y, gameObject) {
@@ -41,38 +54,23 @@ class GameLevel {
     if (tile) tile.addGameObject(gameObject);
   }
 
-  createNewLevel() {
-    console.log("Generating new level with seed:", this.seed);
-    // Future: use seed to generate procedurally
+  removeObjectFromTile(x, y, objectId) {
+    const tile = this.getTile(x, y);
+    if (tile) tile.removeGameObjectById(objectId);
   }
 
-  moveEnemy(id, direction) {
-    for (let row of this.grid) {
-      for (let tile of row) {
-        const enemy = tile.getGameObjects().find((obj) => obj.id === id);
-        if (enemy) {
-          const newX =
-            direction === "LEFT"
-              ? enemy.x - 1
-              : direction === "RIGHT"
-                ? enemy.x + 1
-                : enemy.x;
-          const newY =
-            direction === "UP"
-              ? enemy.y - 1
-              : direction === "DOWN"
-                ? enemy.y + 1
-                : enemy.y;
-
+  moveObject(id, newX, newY) {
+    for (const row of this.grid) {
+      for (const tile of row) {
+        if (tile.hasGameObject(id)) {
+          const gameObject = tile.getGameObjects().find((obj) => obj.id === id);
+          tile.removeGameObjectById(id);
           const targetTile = this.getTile(newX, newY);
-          if (!targetTile || targetTile.type === "wall") return false;
-
-          tile.removeGameObjectById(enemy.id);
-          enemy.x = newX;
-          enemy.y = newY;
-          targetTile.addGameObject(enemy);
-          store.dispatch(refreshMap());
-          return true;
+          if (targetTile?.isWalkable()) {
+            gameObject.setPosition(newX, newY);
+            targetTile.addGameObject(gameObject);
+            return true;
+          }
         }
       }
     }
