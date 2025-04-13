@@ -9,9 +9,9 @@ const PlayerStats = () => {
 
   return (
     <div className="player-stats">
-      <p>Health: {stats.hp} / {stats.maxHp}</p>
-      <p>Experience: {stats.experience}</p>
-      <p>Level: {stats.level}</p>
+      <p>HP: {stats.hp} / {stats.maxHp}</p>
+      <p>Exp: {stats.experience}</p>
+      <p>Lvl: {stats.level}</p>
     </div>
   );
 };
