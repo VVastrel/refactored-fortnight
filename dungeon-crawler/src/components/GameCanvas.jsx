@@ -17,7 +17,7 @@ const GameCanvas = () => {
       const grid = gameLevel.grid;
       grid.forEach((row, y) => {
         row.forEach((tile, x) => {
-          const color = tile.type === "wall" ? "gray" : "black";
+          const color = tile.type === "wall" ? "white" : "black";
           ctx.fillStyle = color;
           ctx.fillRect(x * tileSize, y * tileSize, tileSize, tileSize);
           if (color === "gray") {
