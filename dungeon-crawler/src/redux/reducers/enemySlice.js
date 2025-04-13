@@ -10,7 +10,7 @@ const initialState = {
       stats: {
         hp: 5,
         maxHp: 5,
-        attack: 1,
+        attack: 2,
         defense: 0,
       },
     },

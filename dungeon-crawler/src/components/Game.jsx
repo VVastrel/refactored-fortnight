@@ -1,18 +1,22 @@
 import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
 import GameCanvas from "./GameCanvas";
 import CharacterCanvas from "./CharacterCanvas";
 import PlayerControls from "./PlayerControls";
 import GameLoop from "../core/GameLoop";
-import "./Game.css";
 import { GameWorld } from "../core/GameWorld";
+import PlayerStats from "./GameUI";
+import MainMenu from "./Menu";
+import GameOverOverlay from "./GameOverOverlay.jsx";
+import "./Game.css";
 
 const Game = () => {
-  if (import.meta.env.DEV) {
-    window.GameWorld = GameWorld;
-    window.GameLoop = GameLoop;
-  }
+  const isDead = useSelector((state) => state.player.isDead);
+
+
+
   useEffect(() => {
-    GameLoop.start("turn");
+    GameLoop.start("realtime");
     return () => {
       GameLoop.stop();
     }
@@ -23,6 +27,8 @@ const Game = () => {
       <div className="canvas-container">
         <GameCanvas />
         <CharacterCanvas />
+        <PlayerStats />
+        {isDead && <GameOverOverlay />}
       </div>
       <PlayerControls />
     </div>
