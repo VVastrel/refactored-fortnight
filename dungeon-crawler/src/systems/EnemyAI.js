@@ -63,6 +63,7 @@ function tryMoveEnemy(enemy, direction) {
     .some((obj) => obj.type === "enemy" || obj.type === "player");
   if (blocking) return;
 
+  enemy.sprite.setDirection(direction);
   enemy.setPosition(newX, newY);
 }
 

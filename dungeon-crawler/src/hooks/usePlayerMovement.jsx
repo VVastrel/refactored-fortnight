@@ -62,6 +62,7 @@ export const usePlayerMovement = () => {
     if (blocked) return;
 
     // Move player
+    player.sprite.setDirection(direction);
     player.setPosition(newPosition.x, newPosition.y);
     dispatch(setPlayerPosition(newPosition));
     console.log("Player Position:", newPosition);
