@@ -2,20 +2,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { setPlayerPosition, selectPlayerPosition } from "../redux/reducers/playerSlice";
 import { checkCollision } from "../utils/collisionUtils";
 import { handleTileInteraction } from "../utils/handleTileInteraction";
-import { runEnemyTurn } from "../systems/EnemyAI";
 import { GameWorld } from "../core/GameWorld";
+import GameLoop from "../core/GameLoop";
+import { GRID_SIZE } from "../config/constants";
 
 export const usePlayerMovement = () => {
   const dispatch = useDispatch();
   const playerPosition = useSelector(selectPlayerPosition);
-  const gameMode = useSelector((state) => state.game.mode);
   const isDead = useSelector((state) => state.player.isDead);
-
-  const GRID_SIZE = 20;
 
   const movePlayer = (direction) => {
     if (isDead) {
-      console.log("Dead men can't walk! (Except Mr. Skeleton 🦴)");
+      console.log("Dead men can't walk! (Except Mr. Skeleton)");
       return;
     }
 
@@ -63,13 +61,14 @@ export const usePlayerMovement = () => {
     const blocked = handleTileInteraction(tile, player, dispatch);
     if (blocked) return;
 
-    // Move player (Redux updates position)
+    // Move player
+    player.setPosition(newPosition.x, newPosition.y);
     dispatch(setPlayerPosition(newPosition));
     console.log("Player Position:", newPosition);
 
     // If in turn mode, trigger enemy AI
-    if (gameMode === "turn") {
-      runEnemyTurn();
+    if (GameLoop.getMode() === "turn") {
+      GameLoop.runTurn();
     }
   };
 

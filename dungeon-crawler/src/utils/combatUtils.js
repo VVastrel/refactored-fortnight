@@ -8,8 +8,8 @@ import {
 
 /**
  * Executes an attack between two game objects.
- * Assumes Redux holds the source of truth for stats.
  */
+
 export const performAttack = (attacker, defender) => {
   const state = store.getState();
 

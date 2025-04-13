@@ -1,7 +1,7 @@
 class GameWorld {
   constructor() {
     this.objects = new Map();
-    this.grid = []; // add this line if not already present
+    this.grid = [];
   }
 
   setGrid(grid) {
@@ -36,6 +36,10 @@ class GameWorld {
 
   getObject(id) {
     return this.objects.get(id);
+  }
+
+  getTile(x, y) {
+    return this.grid?.[y]?.[x] ?? null;
   }
 
   getObjectsByType(type) {

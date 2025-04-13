@@ -1,45 +1,46 @@
-import React, { useRef, useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { GameWorld } from "../core/GameWorld";
-import { TILE_SIZE } from "../config/constants"; // Optional: move to shared config
+import { TILE_SIZE } from "../config/constants";
 import { useSelector } from "react-redux";
 import { selectGrid } from "../redux/reducers/mapSlice";
+import wallImage from "../assets/spr_wll.png";
+
 
 const GameCanvas = () => {
   const canvasRef = useRef(null);
-  const grid = useSelector(selectGrid); // Redux holds the map tile metadata
+  const grid = useSelector(selectGrid);
 
   useEffect(() => {
-    if (!grid || !GameWorld.grid) return;
-
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
-    ctx.imageSmoothingEnabled = false;
 
-    const height = GameWorld.grid.length;
-    const width = GameWorld.grid[0]?.length ?? 0;
+    if (!grid || !canvas || !ctx) return;
 
-    canvas.width = width * TILE_SIZE;
-    canvas.height = height * TILE_SIZE;
+    const wallImg = new Image();
+    wallImg.src = wallImage;
 
-    const draw = () => {
-      for (const row of GameWorld.grid) {
+    wallImg.onload = () => {
+      canvas.width = grid[0].length * TILE_SIZE;
+      canvas.height = grid.length * TILE_SIZE;
+      ctx.imageSmoothingEnabled = false;
+
+      for (const row of grid) {
         for (const tile of row) {
-          // 🧱 Prefer Sprite draw if available
-          if (tile.sprite?.draw) {
-            tile.sprite.draw(ctx, tile.x, tile.y, TILE_SIZE);
+          const x = tile.x * TILE_SIZE;
+          const y = tile.y * TILE_SIZE;
+
+          if (tile.type === "wall") {
+            ctx.drawImage(wallImg, x, y, TILE_SIZE, TILE_SIZE);
           } else {
-            // 🔲 Fallback to basic fill
-            ctx.fillStyle = tile.type === "floor" ? "#000" : "#444";
-            ctx.fillRect(tile.x * TILE_SIZE, tile.y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+            ctx.fillStyle = "#000";
+            ctx.fillRect(x, y, TILE_SIZE, TILE_SIZE);
           }
         }
       }
     };
-
-    draw();
   }, [grid]);
 
-  return <canvas ref={canvasRef} />;
+  return <canvas id="GameCanvas" ref={canvasRef} />;
 };
 
 export default GameCanvas;

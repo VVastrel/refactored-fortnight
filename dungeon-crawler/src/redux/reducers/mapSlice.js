@@ -1,22 +1,25 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { GRID_SIZE } from "../../config/constants";
 
-const GRID_SIZE = 20;
-
-// Create a blank grid of tile metadata
 const createEmptyGrid = (size) =>
   Array.from({ length: size }, (_, y) =>
-    Array.from({ length: size }, (_, x) => ({
-      x,
-      y,
-      type: "floor", // or "wall"
-      gameObjectIds: [], // only store IDs here
-    })),
+    Array.from({ length: size }, (_, x) => {
+      const isWall = x === 0 || x === size - 1 || y === 0 || y === size - 1;
+
+      return {
+        x,
+        y,
+        type: isWall ? "wall" : "floor",
+        gameObjectIds: [],
+      };
+    }),
   );
 
 const initialState = {
   seed: null,
   gridSize: GRID_SIZE,
   grid: createEmptyGrid(GRID_SIZE),
+  isReady: false,
 };
 
 const mapSlice = createSlice({
@@ -55,8 +58,17 @@ const mapSlice = createSlice({
         );
       }
     },
+    setGrid: (state, action) => {
+      const { grid } = action.payload;
+      state.grid = grid;
+    },
 
     resetMap: () => initialState,
+
+    setMapReady: (state, action) => {
+      const { isReady } = action.payload;
+      state.isReady = isReady;
+    },
   },
 });
 
@@ -66,11 +78,14 @@ export const {
   addGameObjectToTile,
   removeGameObjectFromTile,
   resetMap,
+  setMapReady,
+  setGrid,
 } = mapSlice.actions;
 
 export const selectMap = (state) => state.map;
 export const selectMapSeed = (state) => state.map.seed;
 export const selectGrid = (state) => state.map.grid;
 export const selectGridSize = (state) => state.map.gridSize;
+export const selectMapReady = (state) => state.map.isReady;
 
 export default mapSlice.reducer;

@@ -18,7 +18,7 @@ export const processEnemyTurn = () => {
     if (isAdjacent) {
       console.log(`${enemy.id} attacks the player!`);
       performAttack(enemy, player);
-      return; // Don't move if attacking
+      return; // dont move if attacking
     }
 
     let direction;
@@ -37,12 +37,10 @@ export const processEnemyTurn = () => {
       direction = directions[Math.floor(Math.random() * directions.length)];
     }
 
-    // Try to move enemy (logic could eventually check tile blocking, etc.)
     tryMoveEnemy(enemy, direction);
   });
 };
 
-// Movement helper (safe logic layer between enemy and GameWorld)
 function tryMoveEnemy(enemy, direction) {
   const dirMap = {
     UP: { x: 0, y: -1 },
@@ -55,11 +53,11 @@ function tryMoveEnemy(enemy, direction) {
   const newX = enemy.x + delta.x;
   const newY = enemy.y + delta.y;
 
-  // Optional: check tile type before moving
+  // check tile type before moving
   const tile = GameWorld.getTile(newX, newY);
   if (!tile || tile.type === "wall") return;
 
-  // Optional: don't move onto another character
+  // don't move onto another character
   const blocking = tile
     .getGameObjects()
     .some((obj) => obj.type === "enemy" || obj.type === "player");

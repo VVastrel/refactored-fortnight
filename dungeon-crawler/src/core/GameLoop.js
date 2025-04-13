@@ -52,7 +52,7 @@ const GameLoop = {
   },
 
   step() {
-    // Manual step in dev/test
+    // manual step for testing
     this.tick();
   },
 

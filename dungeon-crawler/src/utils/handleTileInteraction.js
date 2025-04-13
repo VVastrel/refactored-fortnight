@@ -7,8 +7,9 @@ import { removeGameObjectFromTile } from "../redux/reducers/mapSlice";
  * Handles tile interactions (combat, pickups).
  * Returns true if movement should be blocked.
  */
+
 export const handleTileInteraction = (tile, player, dispatch) => {
-  const objects = tile.getGameObjects();
+  const objects = GameWorld.getObjectsAt(tile.x, tile.y);
 
   // Combat with enemy
   const enemy = objects.find((obj) => obj.type === "enemy");
@@ -17,13 +18,11 @@ export const handleTileInteraction = (tile, player, dispatch) => {
 
     if (result.killed) {
       console.log(`${enemy.id} defeated — leaving body behind.`);
-      // You might want to show corpse or mark on the tile instead of removing
-      // GameWorld.removeObject(enemy.id);
-      // dispatch(removeGameObjectFromTile({ x: tile.x, y: tile.y, gameObjectId: enemy.id }));
+      GameWorld.removeObject(enemy.id);
       return true;
     }
 
-    return true; // block movement while enemy is alive
+    return true;
   }
 
   // Pick up item
@@ -41,7 +40,7 @@ export const handleTileInteraction = (tile, player, dispatch) => {
       }),
     );
 
-    return false; // movement allowed
+    return false;
   }
 
   return false;

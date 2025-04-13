@@ -2,19 +2,18 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   enemies: [
-    // Example format:
-    // {
-    //   id: "enemy-001",
-    //   type: "enemy",
-    //   x: 8,
-    //   y: 8,
-    //   stats: {
-    //     hp: 5,
-    //     maxHp: 5,
-    //     attack: 1,
-    //     defense: 0,
-    //   },
-    // }
+    {
+      id: "enemy-001",
+      type: "enemy",
+      x: 8,
+      y: 8,
+      stats: {
+        hp: 5,
+        maxHp: 5,
+        attack: 1,
+        defense: 0,
+      },
+    },
   ],
 };
 

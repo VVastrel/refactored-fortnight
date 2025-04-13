@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  id: "player-001", // link between object & stats
+  id: "player",
   playerPosition: { x: 5, y: 5 },
   stats: {
     hp: 10,

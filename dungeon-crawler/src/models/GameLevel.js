@@ -1,8 +1,3 @@
-import Tile from "./Tile";
-import wallSpritePath from "../assets/spr_wll.png";
-import { preloadImage } from "../utils/animationUtils";
-import Sprite from "./Sprite"; // Assuming sprite lives here
-
 class GameLevel {
   constructor(size, seed = null) {
     this.size = size;
@@ -12,7 +7,6 @@ class GameLevel {
 
   createDefaultLevel() {
     const grid = [];
-    const wallImage = preloadImage(wallSpritePath);
 
     for (let y = 0; y < this.size; y++) {
       const row = [];
@@ -22,11 +16,7 @@ class GameLevel {
 
         const type = isWall ? "wall" : "floor";
 
-        const sprite = new Sprite({
-          image: isWall ? wallImage : "#000", // floor fallback is just black
-        });
-
-        row.push(new Tile(x, y, type, sprite));
+        row.push({ x, y, type, gameObjectIds: [] });
       }
       grid.push(row);
     }
@@ -38,43 +28,48 @@ class GameLevel {
     return this.grid?.[y]?.[x] ?? null;
   }
 
-  setTileType(x, y, newType, newSprite = null) {
+  setTileType(x, y, newType) {
     const tile = this.getTile(x, y);
     if (!tile) return;
-
     tile.type = newType;
-
-    if (newSprite) {
-      tile.sprite = newSprite;
-    }
   }
 
-  addObjectToTile(x, y, gameObject) {
+  addObjectToTile(x, y, objectId) {
     const tile = this.getTile(x, y);
-    if (tile) tile.addGameObject(gameObject);
+    if (
+      tile?.type === "floor" &&
+      !tile.gameObjectIds.find((obj) => obj.id === objectId)
+    ) {
+      tile.gameObjectIds.push(objectId);
+    }
   }
 
   removeObjectFromTile(x, y, objectId) {
     const tile = this.getTile(x, y);
-    if (tile) tile.removeGameObjectById(objectId);
+    if (tile) {
+      tile.gameObjectIds = tile.gameObjectIds.filter(
+        (obj) => obj.id !== objectId,
+      );
+    }
   }
 
   moveObject(id, newX, newY) {
     for (const row of this.grid) {
       for (const tile of row) {
-        if (tile.hasGameObject(id)) {
-          const gameObject = tile.getGameObjects().find((obj) => obj.id === id);
-          tile.removeGameObjectById(id);
-          const targetTile = this.getTile(newX, newY);
-          if (targetTile?.isWalkable()) {
-            gameObject.setPosition(newX, newY);
-            targetTile.addGameObject(gameObject);
+        if (tile.gameObjectIds.find((obj) => obj.id === id)) {
+          if (this.getTile(newX, newY)?.type === "floor") {
+            this.addObjectToTile(newX, newY, id);
+            this.removeObjectFromTile(tile.x, tile.y, id);
             return true;
           }
         }
       }
     }
     return false;
+  }
+
+  getGrid() {
+    return this.grid;
   }
 }
 

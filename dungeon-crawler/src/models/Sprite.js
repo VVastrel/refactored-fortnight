@@ -20,6 +20,13 @@ class Sprite {
   draw(ctx, x, y, size = TILE_SIZE, frameIndex = 0) {
     if (!this.isVisible) return;
 
+    if (this.image instanceof HTMLImageElement && !this.image.complete) {
+      console.warn("Skipping draw — image not loaded yet:", this.image.src);
+      return;
+    }
+
+    //console.log("Drawing sprite at", x, y, "type:", typeof this.image);
+
     // Solid color (fallback)
     if (typeof this.image === "string") {
       ctx.fillStyle = this.image;

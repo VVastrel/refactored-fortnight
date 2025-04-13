@@ -1,33 +1,29 @@
 import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
 import GameCanvas from "./GameCanvas";
 import CharacterCanvas from "./CharacterCanvas";
 import PlayerControls from "./PlayerControls";
-import { generateMapWithSeed } from "../redux/reducers/mapSlice";
-import { resetPlayer } from "../redux/reducers/playerSlice";
-import { hydrateWorld } from "../utils/hydrateWorld";
 import GameLoop from "../core/GameLoop";
 import "./Game.css";
+import { GameWorld } from "../core/GameWorld";
 
 const Game = () => {
-  const dispatch = useDispatch();
-
+  if (import.meta.env.DEV) {
+    window.GameWorld = GameWorld;
+    window.GameLoop = GameLoop;
+  }
   useEffect(() => {
-    // Start new game on mount
-    dispatch(resetPlayer());
-    dispatch(generateMapWithSeed());
-    hydrateWorld();
-    GameLoop.start("turn"); // or "realtime"
-
+    GameLoop.start("turn");
     return () => {
-      GameLoop.stop(); // Cleanup on unmount
-    };
-  }, [dispatch]);
+      GameLoop.stop();
+    }
+  }, []);
 
   return (
-    <div className="game-container">
-      <GameCanvas />
-      <CharacterCanvas />
+    <div>
+      <div className="canvas-container">
+        <GameCanvas />
+        <CharacterCanvas />
+      </div>
       <PlayerControls />
     </div>
   );

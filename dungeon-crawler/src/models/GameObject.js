@@ -1,3 +1,5 @@
+import { TILE_SIZE } from "../config/constants";
+
 class GameObject {
   constructor(id, type, x = null, y = null, sprite = null) {
     this.id = id;
@@ -18,7 +20,7 @@ class GameObject {
 
   draw(ctx, frameIndex = 0) {
     if (this.canDraw()) {
-      this.sprite.draw(ctx, this.x, this.y, frameIndex);
+      this.sprite.draw(ctx, this.x, this.y, TILE_SIZE, frameIndex);
     }
   }
 }

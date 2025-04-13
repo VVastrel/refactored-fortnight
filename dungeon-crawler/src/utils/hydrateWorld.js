@@ -1,15 +1,47 @@
 import { GameWorld } from "../core/GameWorld";
+import { preloadImage } from "../utils/animationUtils";
+import {
+  GRID_SIZE,
+  TILE_SIZE,
+  FRAME_WIDTH,
+  FRAME_HEIGHT,
+  DEFAULT_FRAME_COUNT,
+} from "../config/constants";
 import store from "../redux/store";
+import { setMapReady, setGrid } from "../redux/reducers/mapSlice";
+import GameLevel from "../models/GameLevel";
+
 import Player from "../models/Player";
 import Enemy from "../models/Enemy";
 import Tile from "../models/Tile";
+import Sprite from "../models/Sprite";
 
-import enemySprite from "../assets/spr_skl_1.png";
-import playerSprite from "../assets/spriteSheet.png";
+import enemySpritePath from "../assets/spr_skl_1.png";
+import playerSpritePath from "../assets/spriteSheet.png";
+import wallSpritePath from "../assets/spr_wll.png";
 
-/**
- * Rebuilds the in-memory world from Redux state.
- */
+// Preload images
+const wallImage = preloadImage(wallSpritePath);
+const floorColor = "#000";
+
+const playerImage = preloadImage(playerSpritePath);
+const playerSprite = new Sprite({
+  image: playerImage,
+  frameWidth: FRAME_WIDTH,
+  frameHeight: FRAME_HEIGHT,
+  totalFrames: DEFAULT_FRAME_COUNT,
+  direction: "RIGHT",
+});
+
+const enemyImage = preloadImage(enemySpritePath);
+const enemySprite = new Sprite({
+  image: enemyImage,
+  frameWidth: FRAME_WIDTH,
+  frameHeight: FRAME_HEIGHT,
+  totalFrames: DEFAULT_FRAME_COUNT,
+  direction: "RIGHT",
+});
+
 export const hydrateWorld = () => {
   GameWorld.reset();
 
@@ -17,9 +49,10 @@ export const hydrateWorld = () => {
 
   const playerState = state.player;
   const enemiesState = state.enemies.enemies;
-  const mapState = state.map;
+  const gameLevel = new GameLevel(GRID_SIZE);
+  const mapState = gameLevel.getGrid();
 
-  // 1. Create all game objects first
+  // === 1. Hydrate Player ===
   const player = new Player(
     "player",
     playerState.playerPosition.x,
@@ -29,6 +62,7 @@ export const hydrateWorld = () => {
   player.applyStats(playerState.stats);
   GameWorld.addObject(player);
 
+  // === 2. Hydrate Enemies ===
   for (const enemyData of enemiesState) {
     const { id, x, y, stats } = enemyData;
     const enemy = new Enemy(id, x, y, enemySprite);
@@ -36,18 +70,18 @@ export const hydrateWorld = () => {
     GameWorld.addObject(enemy);
   }
 
-  // 2. Create in-memory grid using Tile class
-  const memoryGrid = mapState.grid.map((row, y) =>
+  // === 3. Hydrate Tiles ===
+  const memoryGrid = gameLevel.grid.map((row, y) =>
     row.map((tileData, x) => {
-      const tile = new Tile(x, y);
-      tile.type = tileData.type;
+      const sprite = new Sprite({
+        image: tileData.type === "wall" ? wallImage : floorColor,
+      });
 
-      // 3. Link referenced game objects by ID
+      const tile = new Tile(x, y, tileData.type, sprite);
+
       tileData.gameObjectIds.forEach((id) => {
         const obj = GameWorld.getObject(id);
-        if (obj) {
-          tile.addGameObject(obj);
-        }
+        if (obj) tile.addGameObject(obj);
       });
 
       return tile;
@@ -55,6 +89,8 @@ export const hydrateWorld = () => {
   );
 
   GameWorld.setGrid(memoryGrid);
+  store.dispatch(setGrid(mapState));
+  store.dispatch(setMapReady(true));
 
-  console.log("[hydrateWorld] Game world reconstructed from Redux.");
+  console.log("[hydrateWorld] Game world rehydrated.");
 };
