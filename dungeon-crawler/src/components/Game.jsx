@@ -59,10 +59,13 @@ const Game = () => {
     if (!showMenu) {
       GameLoop.start("realtime");
     }
+    if (isDead) {
+      GameLoop.stop();
+    }
     return () => {
       GameLoop.stop();
     };
-  }, [showMenu]);
+  }, [showMenu, isDead]);
 
   const handleStartGame = () => {
     setShowMenu(false); 

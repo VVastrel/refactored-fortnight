@@ -65,7 +65,7 @@ export const usePlayerMovement = () => {
     player.sprite.setDirection(direction);
     player.setPosition(newPosition.x, newPosition.y);
     dispatch(setPlayerPosition(newPosition));
-    console.log("Player Position:", newPosition);
+    //console.log("Player Position:", newPosition);
 
     // If in turn mode, trigger enemy AI
     if (GameLoop.getMode() === "turn") {
