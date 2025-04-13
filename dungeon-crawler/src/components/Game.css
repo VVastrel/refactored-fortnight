@@ -44,9 +44,9 @@ canvas {
    
 
     
-    width: 281px; /* Adjust to your button size */
-    height: 64px; /* Adjust to your button size */
-    background-image: url('../assets/spr_btn_ng1.png'); /* Default frame */
+    width: 281px; 
+    height: 64px; 
+    background-image: url('../assets/spr_btn_ng1.png'); 
     background-size: cover;
     border: none;
     cursor: pointer;
@@ -55,7 +55,7 @@ canvas {
 }
 
 .main-menu button:hover {
-    background-image: url('../assets/spr_btn_ng2.png'); /* Hover frame */
+    background-image: url('../assets/spr_btn_ng2.png'); 
 }
 
 .player-stats {
