@@ -1,44 +1,46 @@
-import React, { useRef, useEffect } from "react";
+import React, { useEffect, useRef } from "react";
+import { GameWorld } from "../core/GameWorld";
+import { TILE_SIZE } from "../config/constants";
 import { useSelector } from "react-redux";
-import { selectGameLevel } from "../redux/reducers/mapSlice.js";
+import { selectGrid } from "../redux/reducers/mapSlice";
+import wallImage from "../assets/spr_wll.png";
+
 
 const GameCanvas = () => {
   const canvasRef = useRef(null);
-  const gameLevel = useSelector(selectGameLevel);
-  const tileSize = 30;
+  const grid = useSelector(selectGrid);
 
   useEffect(() => {
-    if (!gameLevel) return;
-
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
 
-    const drawMap = (ctx) => {
-      const grid = gameLevel.grid;
-      grid.forEach((row, y) => {
-        row.forEach((tile, x) => {
-          const color = tile.type === "wall" ? "white" : "black";
-          ctx.fillStyle = color;
-          ctx.fillRect(x * tileSize, y * tileSize, tileSize, tileSize);
-          if (color === "gray") {
-            ctx.strokeRect(x * tileSize, y * tileSize, tileSize, tileSize);
+    if (!grid || !canvas || !ctx) return;
+
+    const wallImg = new Image();
+    wallImg.src = wallImage;
+
+    wallImg.onload = () => {
+      canvas.width = grid[0].length * TILE_SIZE;
+      canvas.height = grid.length * TILE_SIZE;
+      ctx.imageSmoothingEnabled = false;
+
+      for (const row of grid) {
+        for (const tile of row) {
+          const x = tile.x * TILE_SIZE;
+          const y = tile.y * TILE_SIZE;
+
+          if (tile.type === "wall") {
+            ctx.drawImage(wallImg, x, y, TILE_SIZE, TILE_SIZE);
+          } else {
+            ctx.fillStyle = "#000";
+            ctx.fillRect(x, y, TILE_SIZE, TILE_SIZE);
           }
-
-          tile.getGameObjects().forEach((obj) => {
-            if (obj.canDraw()) {
-              obj.draw(ctx);
-            }
-          });
-        });
-      });
+        }
+      }
     };
+  }, [grid]);
 
-    drawMap(ctx);
-  }, [gameLevel]);
-
-  if (!gameLevel) return null;
-
-  return <canvas ref={canvasRef} width={gameLevel.size * tileSize} height={gameLevel.size * tileSize} />;
+  return <canvas id="GameCanvas" ref={canvasRef} />;
 };
 
 export default GameCanvas;

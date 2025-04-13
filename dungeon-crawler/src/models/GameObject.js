@@ -1,11 +1,12 @@
+import { TILE_SIZE } from "../config/constants";
+
 class GameObject {
   constructor(id, type, x = null, y = null, sprite = null) {
     this.id = id;
     this.type = type; // "player", "enemy", "item", etc.
     this.x = x;
     this.y = y;
-
-    this.sprite = sprite; // Optional: something with a draw() method
+    this.sprite = sprite;
   }
 
   setPosition(x, y) {
@@ -14,14 +15,13 @@ class GameObject {
   }
 
   canDraw() {
-    return this.sprite && this.sprite.isVisible;
+    return !!this.sprite?.isVisible;
   }
 
-  draw(ctx) {
+  draw(ctx, frameIndex = 0) {
     if (this.canDraw()) {
-      this.sprite.draw(ctx, this.x, this.y);
+      this.sprite.draw(ctx, this.x, this.y, TILE_SIZE, frameIndex);
     }
   }
 }
-
 export default GameObject;

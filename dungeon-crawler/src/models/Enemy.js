@@ -1,16 +1,9 @@
-import Character from "./Character.js";
+import Character from "./Character";
 
 class Enemy extends Character {
-  constructor(id, x, y, sprite, customStats = {}) {
-    super(id, "enemy", x, y, sprite, 32, 32, 2); // width, height, frames
-    this.stats = {
-      hp: 10,
-      maxHp: 10,
-      attack: 2,
-      defense: 1,
-      level: 1,
-      ...customStats,
-    };
+  constructor(id, x, y, sprite = null) {
+    super(id, "enemy", x, y, sprite);
+    // Enemy-specific tags or future behaviors can go here
   }
 }
 

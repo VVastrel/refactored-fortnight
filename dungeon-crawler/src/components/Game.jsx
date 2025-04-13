@@ -1,41 +1,30 @@
-import React, { useState, useEffect } from 'react';
-import { useSelector } from "react-redux";
-import GameCanvas from './GameCanvas.jsx';
-import CharacterCanvas from './CharacterCanvas.jsx';
-import Player from './Player.jsx';
-import MainMenu from './Menu.jsx';
-import GameOverOverlay from "./GameOverOverlay.jsx";
-import { startEnemyAI } from "../utils/enemyAI.js";
-import PlayerStats from "./GameUI.jsx";
-import './Game.css';
+import React, { useEffect } from "react";
+import GameCanvas from "./GameCanvas";
+import CharacterCanvas from "./CharacterCanvas";
+import PlayerControls from "./PlayerControls";
+import GameLoop from "../core/GameLoop";
+import "./Game.css";
+import { GameWorld } from "../core/GameWorld";
 
 const Game = () => {
-  const isDead = useSelector((state) => state.player.isDead);
-  const [isGameStarted, setIsGameStarted] = useState(false);
-
+  if (import.meta.env.DEV) {
+    window.GameWorld = GameWorld;
+    window.GameLoop = GameLoop;
+  }
   useEffect(() => {
-    if (isGameStarted) {
-      startEnemyAI();
+    GameLoop.start("turn");
+    return () => {
+      GameLoop.stop();
     }
-  }, [isGameStarted]);
-
-  const handleStartGame = () => {
-    setIsGameStarted(true);
-  };
+  }, []);
 
   return (
-    <div className="canvas-container">
-      {isGameStarted ? (
-        <>
-          <GameCanvas />
-          <CharacterCanvas />
-          <Player />
-          <PlayerStats /> 
-          {isDead && <GameOverOverlay />}
-        </>
-      ) : (
-        <MainMenu onStartGame={handleStartGame} />
-      )}
+    <div>
+      <div className="canvas-container">
+        <GameCanvas />
+        <CharacterCanvas />
+      </div>
+      <PlayerControls />
     </div>
   );
 };

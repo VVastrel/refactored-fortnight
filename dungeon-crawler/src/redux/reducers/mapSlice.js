@@ -1,18 +1,25 @@
 import { createSlice } from "@reduxjs/toolkit";
-import GameLevel from "../../models/GameLevel.js";
-import Enemy from "../../models/Enemy.js";
-import enemySprite from "../../assets/spr_skl_1.png";
+import { GRID_SIZE } from "../../config/constants";
 
-const GRID_SIZE = 20;
-const gameLevel = new GameLevel(GRID_SIZE);
+const createEmptyGrid = (size) =>
+  Array.from({ length: size }, (_, y) =>
+    Array.from({ length: size }, (_, x) => {
+      const isWall = x === 0 || x === size - 1 || y === 0 || y === size - 1;
 
-// Add a test enemy to position (10, 10)
-const testEnemy = new Enemy("enemy-001", 10, 10, enemySprite);
-gameLevel.addObjectToTile(testEnemy.x, testEnemy.y, testEnemy);
+      return {
+        x,
+        y,
+        type: isWall ? "wall" : "floor",
+        gameObjectIds: [],
+      };
+    }),
+  );
 
 const initialState = {
-  seed: null, // future-proof
-  gameLevel: gameLevel,
+  seed: null,
+  gridSize: GRID_SIZE,
+  grid: createEmptyGrid(GRID_SIZE),
+  isReady: false,
 };
 
 const mapSlice = createSlice({
@@ -22,30 +29,46 @@ const mapSlice = createSlice({
     generateMapWithSeed: (state, action) => {
       const seed = action.payload || Math.random().toString(36).slice(2);
       state.seed = seed;
-      state.gameLevel = new GameLevel(GRID_SIZE, seed); // <- pass seed to constructor in the future
+      state.gridSize = GRID_SIZE;
+      state.grid = createEmptyGrid(GRID_SIZE);
     },
+
     setTileType: (state, action) => {
       const { x, y, newType } = action.payload;
-      state.gameLevel.setTileType(x, y, newType);
-    },
-    addGameObjectToTile: (state, action) => {
-      const { x, y, gameObject } = action.payload;
-      state.gameLevel.addObjectToTile(x, y, gameObject);
-    },
-    removeGameObjectFromTile: (state, action) => {
-      const { x, y, gameObjectId } = action.payload;
-      const tile = state.gameLevel.getTile(x, y);
+      const tile = state.grid[y]?.[x];
       if (tile) {
-        tile.removeGameObjectById(gameObjectId);
+        tile.type = newType;
       }
     },
-    refreshMap: (state) => {
-      return {
-        ...state,
-        gameLevel: { ...state.gameLevel }, // trigger new ferefence
-      };
+
+    addGameObjectToTile: (state, action) => {
+      const { x, y, gameObjectId } = action.payload;
+      const tile = state.grid[y]?.[x];
+      if (tile && !tile.gameObjectIds.includes(gameObjectId)) {
+        tile.gameObjectIds.push(gameObjectId);
+      }
     },
+
+    removeGameObjectFromTile: (state, action) => {
+      const { x, y, gameObjectId } = action.payload;
+      const tile = state.grid[y]?.[x];
+      if (tile) {
+        tile.gameObjectIds = tile.gameObjectIds.filter(
+          (id) => id !== gameObjectId,
+        );
+      }
+    },
+    setGrid: (state, action) => {
+      const { grid } = action.payload;
+      state.grid = grid;
+    },
+
     resetMap: () => initialState,
+
+    setMapReady: (state, action) => {
+      const { isReady } = action.payload;
+      state.isReady = isReady;
+    },
   },
 });
 
@@ -54,12 +77,15 @@ export const {
   setTileType,
   addGameObjectToTile,
   removeGameObjectFromTile,
-  refreshMap,
   resetMap,
+  setMapReady,
+  setGrid,
 } = mapSlice.actions;
 
-export const selectGameLevel = (state) => state.map.gameLevel;
-
+export const selectMap = (state) => state.map;
 export const selectMapSeed = (state) => state.map.seed;
+export const selectGrid = (state) => state.map.grid;
+export const selectGridSize = (state) => state.map.gridSize;
+export const selectMapReady = (state) => state.map.isReady;
 
 export default mapSlice.reducer;
