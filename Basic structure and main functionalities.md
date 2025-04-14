@@ -25,6 +25,8 @@ Component-based architecture is what we wanted to use for this project, because 
 ## 6. Functionalities
 
 Game Loop (GameLoop.js) manages real-time and turn-based updates for the game.
+Database records player stats, data and enables sharing of progress.
+
 
 ## 7. Code quality and documentation
 
