@@ -136,6 +136,12 @@ function generateEnemies(rooms, map, dungeonLevel, maxEnemies = 10) {
     const x = rand(room.x + 1, room.x + room.w - 2);
     const y = rand(room.y + 1, room.y + room.h - 2);
 
+    const tile = map[y][x];
+    if (tile.type === "stair" || tile.gameObjectIds.length > 0) {
+      i--; // try again
+      continue;
+    }
+
     const stats = {
       maxHp: 5 + rand(0, dungeonLevel * 2),
       hp: 5 + rand(0, dungeonLevel * 2),
