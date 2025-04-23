@@ -20,7 +20,8 @@ const GameLoop = {
     this.running = true;
 
     this.mode = mode;
-    this.loadWorld();
+    this.newLevel();
+    //this.loadWorld();
 
     if (intervalId) clearInterval(intervalId);
 
