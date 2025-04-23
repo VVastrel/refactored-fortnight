@@ -4,7 +4,6 @@ import { tickHandler } from "./tickHandler";
 import store from "../redux/store";
 import { setGrid, setMapReady } from "../redux/reducers/mapSlice";
 import { setPlayerPosition } from "../redux/reducers/playerSlice";
-//import { clearEnemies } from "../redux/reducers/enemySlice";
 import { generateDungeon } from "../utils/dungeonGenerator";
 
 let intervalId = null;

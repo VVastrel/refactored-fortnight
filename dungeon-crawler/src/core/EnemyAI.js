@@ -1,4 +1,4 @@
-import { GameWorld } from "../core/GameWorld";
+import { GameWorld } from "./GameWorld";
 import { performAttack } from "../utils/combatUtils";
 import store from "../redux/store";
 

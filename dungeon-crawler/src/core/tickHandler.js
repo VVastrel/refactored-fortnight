@@ -1,4 +1,4 @@
-import { processEnemyTurn } from "../systems/EnemyAI";
+import { processEnemyTurn } from "../core/EnemyAI";
 
 /**
  * Main tick logic handler.
