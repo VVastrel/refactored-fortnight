@@ -11,13 +11,15 @@ const PlayerStats = () => {
 
   return (
     <div className="player-stats">
-      <p>HP: {stats.hp} / {stats.maxHp}</p>
-      <p>Att: {stats.attack}</p>
-      <p>Def: {stats.defense}</p>
-      <p>Exp: {stats.experience}</p>
-      <p>Exp required: {stats.experienceToNextLevel}</p>
-      <p>Lvl: {stats.level}</p>
-      <p>Dungeon lvl: {dungeonLevel}</p>
+      <div className="stats-content">
+        <p>HP: {stats.hp} / {stats.maxHp}</p>
+        <p>Att: {stats.attack}</p>
+        <p>Def: {stats.defense}</p>
+        <p>Exp: {stats.experience}</p>
+        <p>Exp required: {stats.experienceToNextLevel}</p>
+        <p>Lvl: {stats.level}</p>
+        <p>Dungeon lvl: {dungeonLevel}</p>
+      </div>
     </div>
   );
 };
