@@ -51,6 +51,9 @@ const enemySlice = createSlice({
         enemy.stats = { ...enemy.stats, ...stats };
       }
     },
+    setEnemies(state, action) {
+      state.enemies = action.payload;
+    },
     resetEnemies: () => initialState,
   },
 });
@@ -61,6 +64,7 @@ export const {
   damageEnemy,
   moveEnemy,
   setEnemyStats,
+  setEnemies,
   resetEnemies,
 } = enemySlice.actions;
 

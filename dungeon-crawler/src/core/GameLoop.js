@@ -5,6 +5,7 @@ import store from "../redux/store";
 import { setGrid, setMapReady } from "../redux/reducers/mapSlice";
 import { setPlayerPosition } from "../redux/reducers/playerSlice";
 import { generateDungeon } from "../utils/dungeonGenerator";
+import { setEnemies } from "../redux/reducers/enemySlice";
 
 let intervalId = null;
 const TICK_INTERVAL = 1000;
@@ -64,11 +65,12 @@ const GameLoop = {
   },
 
   newLevel() {
-    const { grid, playerPosition } = generateDungeon();
+    const { grid, playerPosition, enemies } = generateDungeon();
 
     store.dispatch(setMapReady(false));
     store.dispatch(setGrid({ grid }));
     store.dispatch(setPlayerPosition(playerPosition));
+    store.dispatch(setEnemies(enemies));
 
     setTimeout(() => {
       this.loadWorld();
