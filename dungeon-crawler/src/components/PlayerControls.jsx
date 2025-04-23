@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { usePlayerMovement } from "../hooks/usePlayerMovement";
 import { resetPlayer } from "../redux/reducers/playerSlice";
 import { resetMap } from "../redux/reducers/mapSlice";
+import GameLoop from "../core/GameLoop";
 import KeyPressListener from "./KeyPressListener";
 
 const keyPressToAction = {
@@ -30,6 +31,11 @@ const PlayerControls = () => {
     const action = keyPressToAction[event.key];
     if (action && !isDead) {
       movePlayer(action);
+    }
+
+    // for testing map generation
+    if (key === "l") {
+      GameLoop.newLevel();
     }
   }, [dispatch, isDead, movePlayer]);
 

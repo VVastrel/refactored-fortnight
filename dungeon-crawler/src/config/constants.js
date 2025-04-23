@@ -3,6 +3,11 @@ export const TILE_SIZE = 30;
 export const GRID_SIZE = 20;
 export const CANVAS_SIZE = TILE_SIZE * GRID_SIZE;
 
+// Map config
+export const MAX_ROOMS = 20;
+export const ROOM_MIN_SIZE = 4;
+export const ROOM_MAX_SIZE = 7;
+
 // Animation
 export const ANIMATION_FRAME_DURATION = 400; // ms
 export const DEFAULT_FRAME_COUNT = 2;

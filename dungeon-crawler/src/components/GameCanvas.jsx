@@ -4,6 +4,7 @@ import { TILE_SIZE } from "../config/constants";
 import { useSelector } from "react-redux";
 import { selectGrid } from "../redux/reducers/mapSlice";
 import wallImage from "../assets/spr_wll.png";
+import stairImage from "../assets/spr_str.png";
 
 
 const GameCanvas = () => {
@@ -16,6 +17,8 @@ const GameCanvas = () => {
 
     if (!grid || !canvas || !ctx) return;
 
+    const stairImg = new Image();
+    stairImg.src = stairImage;
     const wallImg = new Image();
     wallImg.src = wallImage;
 
@@ -31,6 +34,8 @@ const GameCanvas = () => {
 
           if (tile.type === "wall") {
             ctx.drawImage(wallImg, x, y, TILE_SIZE, TILE_SIZE);
+          } else if (tile.type === "stair") {
+            ctx.drawImage(stairImg, x, y, TILE_SIZE, TILE_SIZE);
           } else {
             ctx.fillStyle = "#000";
             ctx.fillRect(x, y, TILE_SIZE, TILE_SIZE);

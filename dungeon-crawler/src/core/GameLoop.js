@@ -2,6 +2,10 @@ import { hydrateWorld } from "../utils/hydrateWorld";
 import { GameWorld } from "./GameWorld";
 import { tickHandler } from "./tickHandler";
 import store from "../redux/store";
+import { setGrid, setMapReady } from "../redux/reducers/mapSlice";
+import { setPlayerPosition } from "../redux/reducers/playerSlice";
+//import { clearEnemies } from "../redux/reducers/enemySlice";
+import { generateDungeon } from "../utils/dungeonGenerator";
 
 let intervalId = null;
 const TICK_INTERVAL = 1000;
@@ -58,6 +62,18 @@ const GameLoop = {
 
   loadWorld() {
     hydrateWorld();
+  },
+
+  newLevel() {
+    const { grid, playerPosition } = generateDungeon();
+
+    store.dispatch(setMapReady(false));
+    store.dispatch(setGrid({ grid }));
+    store.dispatch(setPlayerPosition(playerPosition));
+
+    setTimeout(() => {
+      this.loadWorld();
+    }, 0);
   },
 
   getMode() {
