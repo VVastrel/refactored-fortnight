@@ -5,6 +5,7 @@ import { handleTileInteraction } from "../utils/handleTileInteraction";
 import { GameWorld } from "../core/GameWorld";
 import GameLoop from "../core/GameLoop";
 import { GRID_SIZE } from "../config/constants";
+import { logMessage } from "../utils/GameLogger";
 
 export const usePlayerMovement = () => {
   const dispatch = useDispatch();
@@ -51,6 +52,7 @@ export const usePlayerMovement = () => {
     }
 
     if (tile.type === "stair") {
+      logMessage("stair");
       GameLoop.newLevel();
       return;
     }

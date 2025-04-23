@@ -135,7 +135,17 @@ const messages = {
     "You cradle the item like a newborn treasure.",
   ],
 
-  stair: [],
+  stair: [
+    "You descend the stairs to the next level...",
+    "Darkness greets you as you enter a new floor.",
+    "The air grows colder as you go deeper.",
+    "Stone steps echo beneath your feet.",
+    "You feel the weight of the dungeon pressing down.",
+    "Deeper you go... no turning back now.",
+    "The torches flicker behind you as you descend.",
+    "A low groan echoes in the distance below...",
+    "You take a deep breath and press forward into the unknown.",
+  ],
   // add more messages here
 };
 
