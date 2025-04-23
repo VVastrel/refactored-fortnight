@@ -19,6 +19,7 @@ const initialState = {
   seed: null,
   gridSize: GRID_SIZE,
   grid: createEmptyGrid(GRID_SIZE),
+  dungeonLevel: 1,
   isReady: false,
 };
 
@@ -69,6 +70,9 @@ const mapSlice = createSlice({
       const { isReady } = action.payload;
       state.isReady = isReady;
     },
+    increaseDungeonLevel(state) {
+      state.dungeonLevel += 1;
+    },
   },
 });
 
@@ -80,6 +84,7 @@ export const {
   resetMap,
   setMapReady,
   setGrid,
+  increaseDungeonlevel,
 } = mapSlice.actions;
 
 export const selectMap = (state) => state.map;
@@ -87,5 +92,6 @@ export const selectMapSeed = (state) => state.map.seed;
 export const selectGrid = (state) => state.map.grid;
 export const selectGridSize = (state) => state.map.gridSize;
 export const selectMapReady = (state) => state.map.isReady;
+export const selectDungeonLevel = (state) => state.map.dungeonLevel;
 
 export default mapSlice.reducer;

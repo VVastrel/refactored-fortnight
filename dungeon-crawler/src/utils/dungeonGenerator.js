@@ -8,21 +8,8 @@ import {
 const TILE_WALL = "wall";
 const TILE_FLOOR = "floor";
 
-function createEmptyMap(width, height) {
-  const grid = [];
-
-  for (let y = 0; y < height; y++) {
-    const row = [];
-    for (let x = 0; x < width; x++) {
-      row.push({ x, y, type: TILE_WALL, gameObjectIds: [] });
-    }
-    grid.push(row);
-  }
-
-  return grid;
-}
-
 export function generateDungeon(
+  level = 1,
   width = GRID_SIZE,
   height = GRID_SIZE,
   maxRooms = MAX_ROOMS,
@@ -111,45 +98,62 @@ export function generateDungeon(
   const [playerX, playerY] = firstRoom.center;
   const playerPosition = { x: playerX, y: playerY };
 
-  // Helper to randomly select an element from an array
-  function randomElement(arr) {
-    return arr[Math.floor(Math.random() * arr.length)];
-  }
-
-  // Generate enemies
-  // Place enemies randomly in the rooms
-  // No enemies in the first room
-  const eligibleRooms = rooms.slice(1, rooms.length - 1); // exclude player room
-  const enemies = [];
-  // TODO: Number of enemies based on dungeon level
-  // TODO: Enemy stats increase with dungeon level
-  const numberOfEnemies = Math.min(10, eligibleRooms.length * 2);
-
-  for (let i = 0; i < numberOfEnemies; i++) {
-    const room = randomElement(eligibleRooms);
-    const enemyX = rand(room.x + 1, room.x + room.w - 2);
-    const enemyY = rand(room.y + 1, room.y + room.h - 2);
-
-    const enemy = {
-      id: `enemy-${i.toString().padStart(3, "0")}`,
-      type: "enemy",
-      x: enemyX,
-      y: enemyY,
-      stats: {
-        hp: 5,
-        maxHp: 5,
-        attack: 2,
-        defense: 0,
-      },
-    };
-
-    enemies.push(enemy);
-    map[enemyY][enemyX].gameObjectIds.push(enemy.id);
-  }
-
+  const enemies = generateEnemies(rooms, map, level, 10);
   return { grid: map, playerPosition, enemies };
+}
+
+function createEmptyMap(width, height) {
+  const grid = [];
+
+  for (let y = 0; y < height; y++) {
+    const row = [];
+    for (let x = 0; x < width; x++) {
+      row.push({ x, y, type: TILE_WALL, gameObjectIds: [] });
+    }
+    grid.push(row);
+  }
+
+  return grid;
 }
 
 function rand(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+// Helper to randomly select an element from an array
+function randomElement(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
+function generateEnemies(rooms, map, dungeonLevel, maxEnemies = 10) {
+  //const eligibleRooms = rooms.slice(1, rooms.length - 1); // exclude player room and stair room
+  const eligibleRooms = rooms.slice(1); // exclude player room
+  const enemies = [];
+  const numberOfEnemies = Math.min(maxEnemies, eligibleRooms.length * 2);
+
+  for (let i = 0; i < numberOfEnemies; i++) {
+    const room = randomElement(eligibleRooms);
+    const x = rand(room.x + 1, room.x + room.w - 2);
+    const y = rand(room.y + 1, room.y + room.h - 2);
+
+    const stats = {
+      maxHp: 5 + rand(0, dungeonLevel * 2),
+      hp: 5 + rand(0, dungeonLevel * 2),
+      attack: 2 + rand(0, Math.ceil(dungeonLevel / 2)),
+      defense: 0 + Math.floor(dungeonLevel / 3),
+    };
+
+    const enemy = {
+      id: `enemy-${i.toString().padStart(3, "0")}`,
+      type: "enemy",
+      x,
+      y,
+      stats,
+    };
+
+    enemies.push(enemy);
+    map[y][x].gameObjectIds.push(enemy.id);
+  }
+
+  return enemies;
 }

@@ -20,7 +20,8 @@ export const handleTileInteraction = (tile, player, dispatch) => {
     const result = performAttack(player, enemy);
 
     if (result.killed) {
-      console.log(`${enemy.id} defeated — leaving body behind.`);
+      //console.log(`${enemy.id} defeated — leaving body behind.`);
+      console.log(`${enemy.id} defeated`);
       GameWorld.removeObject(enemy.id);
 
       const xp = enemy.stats.maxHp;
