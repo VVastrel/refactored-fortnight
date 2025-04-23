@@ -8,6 +8,7 @@ import { GameWorld } from "../core/GameWorld";
 import PlayerStats from "./GameUI";
 import MainMenu from "./Menu";
 import GameOverOverlay from "./GameOverOverlay.jsx";
+import GameLogPanel from "./GameLogPanel";
 import "./Game.css";
 
 const Game = () => {
@@ -35,11 +36,14 @@ const Game = () => {
       {showMenu ? (
         <MainMenu onStartGame={handleStartGame} /> 
       ) : (
-        <div className="canvas-container">
-          <GameCanvas />
-          <CharacterCanvas />
-          <PlayerStats />
-          {isDead && <GameOverOverlay />}
+        <div className="game-wrapper">
+          <div className="canvas-container">
+            <GameCanvas />
+            <CharacterCanvas />
+            <PlayerStats />
+            {isDead && <GameOverOverlay />}
+          </div>
+            <GameLogPanel />
         </div>
       )}
       {!showMenu && <PlayerControls />}

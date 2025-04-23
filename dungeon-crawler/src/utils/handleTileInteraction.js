@@ -1,3 +1,4 @@
+import { logMessage } from "../utils/GameLogger";
 import { GameWorld } from "../core/GameWorld";
 import { performAttack } from "./combatUtils";
 import {
@@ -21,7 +22,7 @@ export const handleTileInteraction = (tile, player, dispatch) => {
 
     if (result.killed) {
       //console.log(`${enemy.id} defeated — leaving body behind.`);
-      console.log(`${enemy.id} defeated`);
+      logMessage("enemyDefeated");
       GameWorld.removeObject(enemy.id);
 
       const xp = enemy.stats.maxHp;
@@ -36,7 +37,7 @@ export const handleTileInteraction = (tile, player, dispatch) => {
   // Pick up item
   const item = objects.find((obj) => obj.type === "item");
   if (item) {
-    console.log(`Picked up item: ${item.id}`);
+    logMessage("pickupItem");
     dispatch(addItemToInventory(item));
 
     GameWorld.removeObject(item.id);

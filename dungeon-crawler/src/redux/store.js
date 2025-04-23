@@ -3,6 +3,7 @@ import playerReducer from "./reducers/playerSlice";
 import mapReducer from "./reducers/mapSlice";
 import gameReducer from "./reducers/gameSlice.js";
 import enemyReducer from "./reducers/enemySlice.js";
+import logReducer from "./reducers/logSlice";
 
 const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ const store = configureStore({
     map: mapReducer,
     game: gameReducer,
     enemies: enemyReducer,
+    log: logReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

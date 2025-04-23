@@ -8,6 +8,9 @@ export const MAX_ROOMS = 20;
 export const ROOM_MIN_SIZE = 4;
 export const ROOM_MAX_SIZE = 7;
 
+// Log config
+export const MAX_LOG_LENGTH = 100;
+
 // Animation
 export const ANIMATION_FRAME_DURATION = 400; // ms
 export const DEFAULT_FRAME_COUNT = 2;

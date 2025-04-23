@@ -1,4 +1,5 @@
 import { GameWorld } from "../core/GameWorld";
+import { logMessage } from "../utils/GameLogger";
 
 /**
  * Checks if the tile at the given position is blocked (wall or other logic).
@@ -13,7 +14,7 @@ export const checkCollision = (position) => {
   }
 
   if (tile.type === "wall") {
-    console.log("Blocked by wall at:", position);
+    logMessage("wall");
     return true;
   }
 

@@ -16,7 +16,7 @@ export const processEnemyTurn = () => {
     const isAdjacent = dx + dy === 1;
 
     if (isAdjacent) {
-      console.log(`${enemy.id} attacks the player!`);
+      //console.log(`${enemy.id} attacks the player!`);
       performAttack(enemy, player);
       return; // dont move if attacking
     }

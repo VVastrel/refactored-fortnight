@@ -40,7 +40,6 @@ export const usePlayerMovement = () => {
 
     // Collision check
     if (checkCollision(newPosition)) {
-      console.log("Blocked by wall.");
       return;
     }
 
