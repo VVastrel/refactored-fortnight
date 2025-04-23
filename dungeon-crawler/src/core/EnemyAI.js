@@ -61,9 +61,20 @@ function tryMoveEnemy(enemy, direction) {
   const blocking = tile
     .getGameObjects()
     .some((obj) => obj.type === "enemy" || obj.type === "player");
-  if (blocking) return;
+  if (blocking) {
+    return;
+  }
 
+  // remove enemy from old tile
+  const oldTile = GameWorld.getTile(enemy.x, enemy.y);
+  oldTile.removeGameObjectById(enemy.id);
+  // add enemy to new tile
+  tile.addGameObject(enemy);
+
+  // flip enemy sprite to match the direcion of movement
   enemy.sprite.setDirection(direction);
+
+  // update enemy position
   enemy.setPosition(newX, newY);
 }
 
