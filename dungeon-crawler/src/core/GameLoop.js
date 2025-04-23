@@ -2,7 +2,11 @@ import { hydrateWorld } from "../utils/hydrateWorld";
 import { GameWorld } from "./GameWorld";
 import { tickHandler } from "./tickHandler";
 import store from "../redux/store";
-import { setGrid, setMapReady } from "../redux/reducers/mapSlice";
+import {
+  setGrid,
+  setMapReady,
+  increaseDungeonLevel,
+} from "../redux/reducers/mapSlice";
 import { setPlayerPosition } from "../redux/reducers/playerSlice";
 import { generateDungeon } from "../utils/dungeonGenerator";
 import { setEnemies } from "../redux/reducers/enemySlice";
@@ -66,7 +70,10 @@ const GameLoop = {
   },
 
   newLevel() {
-    const { grid, playerPosition, enemies } = generateDungeon();
+    store.dispatch(increaseDungeonLevel());
+
+    const level = store.getState().map.dungeonLevel;
+    const { grid, playerPosition, enemies } = generateDungeon(level);
 
     store.dispatch(setMapReady(false));
     store.dispatch(setGrid({ grid }));

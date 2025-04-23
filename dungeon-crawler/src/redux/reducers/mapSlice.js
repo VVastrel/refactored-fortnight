@@ -84,7 +84,7 @@ export const {
   resetMap,
   setMapReady,
   setGrid,
-  increaseDungeonlevel,
+  increaseDungeonLevel,
 } = mapSlice.actions;
 
 export const selectMap = (state) => state.map;
