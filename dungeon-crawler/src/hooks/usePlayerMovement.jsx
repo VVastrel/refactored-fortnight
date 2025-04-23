@@ -51,6 +51,11 @@ export const usePlayerMovement = () => {
       return;
     }
 
+    if (tile.type === "stair") {
+      GameLoop.newLevel();
+      return;
+    }
+
     const player = GameWorld.getObject("player");
     if (!player) {
       console.warn("Player object not found in GameWorld.");

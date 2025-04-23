@@ -55,7 +55,7 @@ function tryMoveEnemy(enemy, direction) {
 
   // check tile type before moving
   const tile = GameWorld.getTile(newX, newY);
-  if (!tile || tile.type === "wall") return;
+  if (!tile || tile.type !== "floor") return;
 
   // don't move onto another character
   const blocking = tile
