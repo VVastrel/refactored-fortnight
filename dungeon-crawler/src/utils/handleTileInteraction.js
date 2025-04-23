@@ -1,6 +1,9 @@
 import { GameWorld } from "../core/GameWorld";
 import { performAttack } from "./combatUtils";
-import { addItemToInventory } from "../redux/reducers/playerSlice";
+import {
+  addItemToInventory,
+  gainExperience,
+} from "../redux/reducers/playerSlice";
 import { removeGameObjectFromTile } from "../redux/reducers/mapSlice";
 
 /**
@@ -19,6 +22,10 @@ export const handleTileInteraction = (tile, player, dispatch) => {
     if (result.killed) {
       console.log(`${enemy.id} defeated — leaving body behind.`);
       GameWorld.removeObject(enemy.id);
+
+      const xp = enemy.stats.maxHp;
+      dispatch(gainExperience(xp));
+
       return true;
     }
 
