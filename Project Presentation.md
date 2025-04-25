@@ -1,9 +1,5 @@
 # Phase 4 – Project Presentation
 
-> [!NOTE]  
-> Think of this as presenting your project, which you can include in your job application. The presentation should be clear and concise. Explain the entire project. Don't be afraid to highlight failures, as everyone has experienced them at some point. Consider that the viewer may not have a strong technical background.  
->   
-> **You can do this entire presentation in English or Finnish.**
 
 ## 🎯 Project title
 
@@ -13,20 +9,31 @@ _Give your project a descriptive and informative title._
 
 ## 📝 Project overview
 
-_Briefly describe the project’s purpose, its target users, and its context._
+
+Fast-paced dungeon crawler built with Javascript and React, while utilizing SQL tables. Players explore randomly generated dungeons, fight varies types of enemies, gain experience points, level up and find new gear. Dungeons scale up in difficulty  as the player progresses through the floors of the dungeon, and there's even some harder boss monsters to encounter. The game has a mechanic that records the place of death and gear the player had, and lets spits out a link that player can then share with someone else. That someone can then find the corpse and gear of that player, and be more equipped to handle the challenges ahead. Our target audience is anyone who needs to waste a few minutes, but you can also play for extended sessions like for example when you're passing through diamonds in the toilet.
+
+
 
 ---
 
 ## 📌 Use case summary
 
-_Link to the use cases defined in Phase 1._
 
 | Use Case | Implemented (Yes/No) | Demonstration / Notes |
 |----------|----------------------|------------------------|
-| Example: User logs in and makes a reservation | Yes | Implemented using secure session handling. Demo at 2:45 in the video. |
-| Example: Admin deletes resources | No | Not prioritized, possible future work. |
+| Main menu that has a start game button | Yes |  |
+| Player starts a new game and enters a randomly generated dungeon | Yes |  |
+| Player moves and can engage enemies | Yes | |
+| Player and enemy stats | Yes | |
+| Player gains EXP and levels up | Yes | |
+| Player can find and equip items | No | |
+| Dungeon enemies scale in difficulty | Yes | |
+| Boss enemies | No | |
+| Player death creates a shareable dungeon link | Partly | |
+| Looting other players corpses | No | |
+| UI displays Health, EXP and Gear | Partly | Health and EXP are implemented |
 
-_Add explanations for each use case, including demo timestamps if using video._
+
 
 ---
 
@@ -52,12 +59,15 @@ _What worked well? What challenges did you face? What would you add or improve i
 
 _You can copy from the logbook here._
 
-| Date       | Time | Task                                |
-|------------|------|-------------------------------------|
-| 2.4.2025   | 3h   | Defined use cases                   |
-| 4.4.2025   | 2h   | Built login form                    |
-| ...        | ...  | ...                                 |
-| **Total**  | **63h** |                                 |
+| Date  | Used hours | Subject(s) |  outcome |
+| :---  |     :---:      |     :---:      |     :---:      |
+| 19.3.2025 | 40 mins | Planning the phase 1  | Defined User Personas  |
+| 27.3.2025 | 4 hours | Planning project structure | Created initial structure |
+| 27.3.2025 | 3 hours | Working on player movement | Created base for movement |
+| 5.4.2025 | 2 hours | Working on database implementation | SQLite implemented |
+| 11.4.2025 | 2 hours | Making assets and implementing them | Graphics enhanced |
+| 12.4.2025 | 3 hours | Fixing previous SQLite implementation | Failed |
+| 13.4.2025 | 4 hours | Working on menu, UI and backend stuff | SQLite fixed and graphics enhanced |
 
 ---
 
