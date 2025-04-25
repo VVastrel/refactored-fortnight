@@ -18,7 +18,17 @@ export const usePlayerMovement = () => {
       return;
     }
 
+
     if (!direction || !playerPosition) return;
+
+    const player = GameWorld.getObject("player");
+    if (!player) {
+      console.warn("Player object not found in GameWorld.");
+      return;
+    }
+
+    // turn player sprite to the direction of movement
+    player.sprite.setDirection(direction);
 
     const newPosition = { ...playerPosition };
 
@@ -57,18 +67,17 @@ export const usePlayerMovement = () => {
       return;
     }
 
-    const player = GameWorld.getObject("player");
-    if (!player) {
-      console.warn("Player object not found in GameWorld.");
-      return;
-    }
 
     // Handle tile interaction (combat, items, etc.)
     const blocked = handleTileInteraction(tile, player, dispatch);
-    if (blocked) return;
+    if (blocked){ 
+      if (GameLoop.getMode() === "turn") {
+        GameLoop.runTurn();
+      }
+      return;
+    }
 
     // Move player
-    player.sprite.setDirection(direction);
     player.setPosition(newPosition.x, newPosition.y);
     dispatch(setPlayerPosition(newPosition));
     //console.log("Player Position:", newPosition);
