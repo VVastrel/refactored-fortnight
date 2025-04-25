@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { usePlayerMovement } from "../hooks/usePlayerMovement";
 import { resetPlayer } from "../redux/reducers/playerSlice";
 import { resetMap } from "../redux/reducers/mapSlice";
+import { clearLog } from "../redux/reducers/logSlice";
+import { logMessage } from "../utils/GameLogger";
 import GameLoop from "../core/GameLoop";
 import KeyPressListener from "./KeyPressListener";
 
@@ -25,6 +27,8 @@ const PlayerControls = () => {
     if (isDead && key === "r") {
       dispatch(resetPlayer());
       dispatch(resetMap());
+      dispatch(clearLog());
+      logMessage("restart");
       return;
     }
 
@@ -34,9 +38,9 @@ const PlayerControls = () => {
     }
 
     // for testing map generation
-    if (key === "l") {
-      GameLoop.newLevel();
-    }
+    //if (key === "l") {
+    //  GameLoop.newLevel();
+    //}
   }, [dispatch, isDead, movePlayer]);
 
   return <KeyPressListener onKeyPress={onKeyPress} />;

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { logMessage } from "../utils/GameLogger";
 import GameCanvas from "./GameCanvas";
 import CharacterCanvas from "./CharacterCanvas";
 import PlayerControls from "./PlayerControls";
@@ -17,7 +18,8 @@ const Game = () => {
 
   useEffect(() => {
     if (!showMenu) {
-      GameLoop.start("realtime");
+      //GameLoop.start("realtime");
+      GameLoop.start("turn");
     }
     if (isDead) {
       GameLoop.stop();
@@ -28,6 +30,7 @@ const Game = () => {
   }, [showMenu, isDead]);
 
   const handleStartGame = () => {
+    logMessage("startGame");
     setShowMenu(false); 
   };
 

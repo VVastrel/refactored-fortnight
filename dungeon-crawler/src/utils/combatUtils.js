@@ -45,6 +45,11 @@ export const performAttack = (attacker, defender) => {
 
     store.dispatch(takeDamage(damage));
     const newHp = store.getState().player.stats.hp;
+    if (newHp <= 0) {
+      logMessage("playerDeath");
+      logMessage("playerLastWords");
+    }
+
     return { killed: newHp <= 0 };
   }
 

@@ -43,6 +43,32 @@ const messages = {
     "Next time, try opening your eyes.",
   ],
 
+  playerDeath: [
+    "Your journey ends here.",
+    "You fall to the dungeon floor, never to rise again.",
+    "Darkness takes you...",
+    "The last thing you hear is the echo of your own heartbeat.",
+    "You fought bravely — but the dungeon claimed another.",
+    "Your adventure is over.",
+    "The skeleton grins as your vision fades.",
+    "A hollow silence fills the air... your body still.",
+    "The dungeon hungers — and it has fed well.",
+    "Your tale ends here, among the dust and bones.",
+  ],
+
+  playerLastWords: [
+    `"Tell my cat... I tried."`,
+    `"At least I died doing what I love... suffering."`,
+    `"It was just a skeleton..."`,
+    `"So much for level 2..."`,
+    `"Next time... more potions..."`,
+    `"My inventory was finally full..."`,
+    `"I regret nothing. Except everything."`,
+    `"What do you mean permadeath?"`,
+    `"Not like this... not by bones!"`,
+    `"My only weakness... being bad at this game."`,
+  ],
+
   skeletonAttackIntro: [
     "Mr. Skeleton rattles forward with murder in his eye sockets.",
     "The skeleton lunges at you with a jagged blade!",
@@ -145,6 +171,32 @@ const messages = {
     "The torches flicker behind you as you descend.",
     "A low groan echoes in the distance below...",
     "You take a deep breath and press forward into the unknown.",
+  ],
+
+  startGame: [
+    "You awaken at the edge of the dungeon...",
+    "No map. No light. Just courage. Or foolishness.",
+    "You take your first step into the unknown.",
+    "Some say the dungeon has no end. Others just never came back.",
+    "The air is damp, the silence... suspicious.",
+    "You hear bones rattling in the distance. Good sign?",
+    "So begins your descent.",
+    "Welcome to the dungeon. Hope you brought snacks.",
+    "The door slams shut behind you. Typical.",
+    "Adventure awaits. Or death. Could be both.",
+  ],
+
+  restart: [
+    "You rise again — stronger, wiser. Maybe.",
+    "The dungeon calls once more.",
+    "You brush the dust off and try again.",
+    "Another attempt. Another story.",
+    "Your death was just a minor inconvenience.",
+    "Back into the dark you go.",
+    "Was it all a dream? Probably not.",
+    "The skeletons are still waiting...",
+    "New game. New regrets.",
+    "You press start. The dungeon presses back.",
   ],
   // add more messages here
 };
