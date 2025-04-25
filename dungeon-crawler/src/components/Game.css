@@ -79,8 +79,9 @@ canvas {
     color: white;
     
     z-index: 10;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    font-size: 20px;
+    font-family: 'Monospace', 'Courier New', Courier, monospace;
+    font-size: 16px;
+    line-height: 0.2;
     
   }
 
@@ -97,12 +98,13 @@ canvas {
 }
 
 .game-log {
+  z-index: 10;
   width: 790px; /* 600 canvas + 190 UI */
   height: 120px;
   overflow-y: auto;
   background-color: black;
   color: white;
-  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-family: 'Monospace', 'Courier New', Courier, monospace;
   font-size: 18px;
   border: 1px solid #4b5563;
   box-sizing: border-box;
