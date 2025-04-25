@@ -1,3 +1,8 @@
+---
+title: Basic structure
+layout: default
+---
+
 # Project phase 2 - Basic structure and main functionalities
 
 In this phase we focused on creating the skeleton of the project that is able to whitstand the weight of all the upcoming features. Making an entire game (even if it's a smaller one) is not a small or easy undertaking. 
