@@ -41,17 +41,23 @@ Fast-paced dungeon crawler built with Javascript and React, while utilizing SQL 
 
 _Describe technologies used, architectural decisions, and how key features were implemented._
 
+The game is built using JavaScript for core gameplay logic and mechanics. React is used to break the game down into modular pieces that are easy to modify without breaking something else. SQL handles backend storage for player information and dungeon seeds. HTML and CSS are used for visually styling the game and bringing in 2D assets.
+
 ---
 
 ## 🚂 Development process
 
 _Summarize your progress from start to finish, mentioning key decisions or changes along the way._
 
+At first we created a sort of mock-up of the game only using Javascript, CSS and HMTL canvas, and thought that it would be easy to bring that to React and separate it into modular pieces. It wasn't and converting proved to be a relatively huge undertaking. Once converted the project became easy to manage so there's no real issues after that since we're just really following the original plan we have for the project.
+
 ---
 
 ## ☀️ Reflection and future work
 
 _What worked well? What challenges did you face? What would you add or improve in the future?_
+
+
 
 ---
 
