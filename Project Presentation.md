@@ -26,7 +26,7 @@ Fast-paced dungeon crawler built with Javascript and React, while utilizing SQL 
 | Player moves and can engage enemies | Yes | |
 | Player and enemy stats | Yes | |
 | Player gains EXP and levels up | Yes | |
-| Player can find and equip items | No | |
+| Player can find and equip items | Partly | Support is there but no items yet |
 | Dungeon enemies scale in difficulty | Yes | |
 | Boss enemies | No | |
 | Player death creates a shareable dungeon link | Partly | |
