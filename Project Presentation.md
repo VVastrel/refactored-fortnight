@@ -3,7 +3,7 @@
 
 ## 🎯 Project title
 
-_Give your project a descriptive and informative title._
+Palace of the Holder
 
 ---
 
