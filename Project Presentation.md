@@ -69,6 +69,7 @@ As stated before we underestimated the amount of work it would be to make a game
 | 13.4.2025 | 4 hours | Working on menu, UI and backend stuff | SQLite fixed and graphics enhanced |
 | 19.4.2025 | 6 hours | Implementing randomly generated maps and enemies | Random generation implemented |
 | 24.4.2025 | 3 hours | Working on visuals | Made new sprite for wall tiles, fixed tile scaling issue and changed the UI font |
+| 25.4.2025 | 2 hours | Virtual machine and Azure | Project now runs on Virtual machine and on Azure |
 
 ---
 
