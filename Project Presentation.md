@@ -21,7 +21,7 @@ Fast-paced dungeon crawler built with Javascript and React, while utilizing SQL 
 
 | Use Case | Implemented (Yes/No) | Demonstration / Notes |
 |----------|----------------------|------------------------|
-| Main menu that has a start game button | Yes |  |
+| Main menu that has a start game button | Yes | Eventually we'll add a load game button |
 | Player starts a new game and enters a randomly generated dungeon | Yes |  |
 | Player moves and can engage enemies | Yes | |
 | Player and enemy stats | Yes | |
@@ -45,21 +45,18 @@ The game is built using JavaScript for core gameplay logic and mechanics. React 
 
 ## 🚂 Development process
 
-At first we created a sort of mock-up of the game only using Javascript, CSS and HMTL canvas, and thought that it would be easy to bring that to React and separate it into modular pieces. It wasn't and converting proved to be a relatively huge undertaking. Once converted the project became easy to manage so there's no real issues after that since we're just really following the original plan we have for the project.
+At first we created a sort of mock-up of the game only using Javascript, CSS and HMTL canvas, and thought that it would be easy to bring that to React and separate it into modular pieces. It wasn't and converting proved to be a relatively huge undertaking. Once converted the project became easy to manage so there's no real issues after that since we're really just following the original plan we have for the project. 
 
 ---
 
 ## ☀️ Reflection and future work
 
-_What worked well? What challenges did you face? What would you add or improve in the future?_
-
-
+As stated before we underestimated the amount of work it would be to make a game in React, but once everything was set up, it was easy to actually work on adding more features and visuals. Once we had an issue near the beginning of the project where both of us were working on large commits at the same time and that caused issues when merging those together. In the future if we continue working on this project, we'll most likely make a version that runs native on windows and linux. That would allow us to spend more time making a more feature rich game.
 
 ---
 
 ## 📊 Work Hours Log
 
-_You can copy from the logbook here._
 
 | Date  | Used hours | Subject(s) |  outcome |
 | :---  |     :---:      |     :---:      |     :---:      |
@@ -70,6 +67,8 @@ _You can copy from the logbook here._
 | 11.4.2025 | 2 hours | Making assets and implementing them | Graphics enhanced |
 | 12.4.2025 | 3 hours | Fixing previous SQLite implementation | Failed |
 | 13.4.2025 | 4 hours | Working on menu, UI and backend stuff | SQLite fixed and graphics enhanced |
+| 19.4.2025 | 6 hours | Implementing randomly generated maps and enemies | Random generation implemented |
+| 24.4.2025 | 3 hours | Working on visuals | Made new sprite for wall tiles, fixed tile scaling issue and changed the UI font |
 
 ---
 
