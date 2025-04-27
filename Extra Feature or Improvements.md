@@ -4,6 +4,13 @@
 
 
 We decided to fully implement features we had planned, but did not have time to implement before the previous deadline.
+Here's a list of implemented features:
+- Randomly generated dungeons
+- Spawning enemies randomly
+- Stairs to next level
+- Log that shows player action
+
+
 
 ---
 
