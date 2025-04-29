@@ -81,4 +81,5 @@ https://vimeo.com/1078749306/ec9e664a25?share=copy
 ## Access the Game
 
 [Palace of the Holder](http://palaceoftheholder.northeurope.cloudapp.azure.com/)
+
 Please click the link above to access the game.
