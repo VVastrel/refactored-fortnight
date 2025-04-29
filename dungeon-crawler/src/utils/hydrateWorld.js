@@ -1,8 +1,6 @@
 import { GameWorld } from "../core/GameWorld";
 import { preloadImage } from "../utils/animationUtils";
 import {
-  GRID_SIZE,
-  TILE_SIZE,
   FRAME_WIDTH,
   FRAME_HEIGHT,
   DEFAULT_FRAME_COUNT,

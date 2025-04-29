@@ -1,6 +1,12 @@
 // Grid / tile config
 export const TILE_SIZE = 32;
 export const GRID_SIZE = 20;
+export const GRID_HEIGHT = 20;
+export const GRID_WIDTH = 20;
+
+// Canvas
+export const CANVAS_WIDTH = TILE_SIZE * GRID_WIDTH;
+export const CANVAS_HEIGHT = TILE_SIZE * GRID_HEIGHT;
 export const CANVAS_SIZE = TILE_SIZE * GRID_SIZE;
 
 // Map config

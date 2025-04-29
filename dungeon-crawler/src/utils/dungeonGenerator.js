@@ -1,5 +1,6 @@
 import {
-  GRID_SIZE,
+  GRID_WIDTH,
+  GRID_HEIGHT,
   MAX_ROOMS,
   ROOM_MIN_SIZE,
   ROOM_MAX_SIZE,
@@ -10,8 +11,8 @@ const TILE_FLOOR = "floor";
 
 export function generateDungeon(
   level = 1,
-  width = GRID_SIZE,
-  height = GRID_SIZE,
+  width = GRID_WIDTH,
+  height = GRID_HEIGHT,
   maxRooms = MAX_ROOMS,
   roomMinSize = ROOM_MIN_SIZE,
   roomMaxSize = ROOM_MAX_SIZE,

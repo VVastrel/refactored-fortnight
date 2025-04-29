@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { GameWorld } from "../core/GameWorld";
-import { TILE_SIZE } from "../config/constants";
+import { TILE_SIZE, CANVAS_WIDTH, CANVAS_HEIGHT } from "../config/constants";
 import { useSelector } from "react-redux";
 import { selectGrid } from "../redux/reducers/mapSlice";
 import wallImage from "../assets/spr_wll.png";
@@ -23,8 +22,8 @@ const GameCanvas = () => {
     wallImg.src = wallImage;
 
     wallImg.onload = () => {
-      canvas.width = grid[0].length * TILE_SIZE;
-      canvas.height = grid.length * TILE_SIZE;
+      canvas.width = CANVAS_WIDTH;
+      canvas.height = CANVAS_HEIGHT;
       ctx.imageSmoothingEnabled = false;
 
       for (const row of grid) {

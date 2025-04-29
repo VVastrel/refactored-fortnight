@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from "react";
 import { useAnimation } from "../hooks/useAnimation";
 import { GameWorld } from "../core/GameWorld";
-import { CANVAS_SIZE } from "../config/constants";
+import { CANVAS_HEIGHT, CANVAS_WIDTH} from "../config/constants";
 
 
 const CharacterCanvas = () => {
@@ -17,8 +17,8 @@ useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
 
-    canvas.width = CANVAS_SIZE;
-    canvas.height = CANVAS_SIZE;
+    canvas.width = CANVAS_WIDTH;
+    canvas.height = CANVAS_HEIGHT;
     ctx.imageSmoothingEnabled = false;
 
     let animationFrameId;
@@ -30,7 +30,6 @@ useEffect(() => {
       const objects = GameWorld.getAll();
       for (const obj of objects) {
         if (obj.canDraw?.()) {
-          //console.log("frameIndexRef: ", frameIndexRef.current);
           obj.draw(ctx, frameIndexRef.current);
         }
       }
