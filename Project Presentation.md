@@ -3,7 +3,8 @@
 
 ## 🎯 Project title
 
-Palace of the Holder
+[Palace of the Holder](http://palaceoftheholder.northeurope.cloudapp.azure.com/)
+
 
 ---
 
@@ -76,3 +77,8 @@ As stated before we underestimated the amount of work it would be to make a game
 ## 🪢 Presentation link
 
 https://vimeo.com/1078749306/ec9e664a25?share=copy
+
+## Access the Game
+
+[Palace of the Holder](http://palaceoftheholder.northeurope.cloudapp.azure.com/)
+Please click the link above to access the game.
